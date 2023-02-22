@@ -12,6 +12,7 @@ import { CloseButtonPanel } from "features/game/components/CloseablePanel";
 
 const CONTENT_HEIGHT = 380;
 
+type TabView = "home";
 interface IslandTravelModalProps {
   isOpen: boolean;
   bumpkin: Bumpkin | undefined;
@@ -60,8 +61,8 @@ export const IslandTravelModal: React.FC<IslandTravelModalProps> = ({
 
   return (
     <Modal centered show={isOpen} onHide={onClose} onShow={onShow}>
-      <CloseButtonPanel
-        tabs={[{ icon: boatIcon, name: "Travel To" }]}
+      <CloseButtonPanel<TabView>
+        tabs={[{ icon: boatIcon, name: "Travel To", view: "home" }]}
         bumpkinParts={bumpkinParts}
         onClose={onClose}
       >

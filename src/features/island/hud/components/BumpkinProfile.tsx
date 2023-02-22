@@ -7,7 +7,7 @@ import whiteBg from "assets/ui/profile/bg.png";
 
 import {
   BumpkinPanel,
-  ViewState,
+  TabView,
 } from "features/bumpkins/components/BumpkinPanel";
 import { DynamicNFT } from "features/bumpkins/components/DynamicNFT";
 import { Context } from "features/game/GameProvider";
@@ -179,7 +179,7 @@ export const BumpkinAvatar: React.FC<AvatarProps> = ({
 
 export const BumpkinProfile: React.FC = () => {
   const progressBarEl = useRef<SpriteSheetInstance>();
-  const [initialView, setInitialView] = useState<ViewState>("home");
+  const [initialView, setInitialView] = useState<TabView>("home");
   const [showModal, setShowModal] = useState(false);
 
   const { gameService } = useContext(Context);
@@ -198,13 +198,14 @@ export const BumpkinProfile: React.FC = () => {
   }, [level, experience]);
 
   const handleShowHomeModal = () => {
-    setInitialView(
-      showAchievementAlert
-        ? "achievements"
-        : showSkillPointAlert
-        ? "skills"
-        : "home"
-    );
+    if (showAchievementAlert) {
+      setInitialView("achievements");
+    } else if (showSkillPointAlert) {
+      setInitialView("skills");
+    } else {
+      setInitialView("home");
+    }
+
     setShowModal(true);
   };
 

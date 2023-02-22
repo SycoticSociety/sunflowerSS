@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import blacksmith from "assets/buildings/goblin_blacksmith.gif";
 
 import { Action } from "components/ui/Action";
@@ -7,16 +7,13 @@ import { blacksmithAudio } from "lib/utils/sfx";
 import { MapPlacement } from "features/game/expansion/components/MapPlacement";
 import { Modal } from "react-bootstrap";
 import { CloseButtonPanel } from "features/game/components/CloseablePanel";
-import { Inventory } from "features/game/types/game";
 import { GoblinBlacksmithItems } from "./components/GoblinBlacksmithItems";
 import { SUNNYSIDE } from "assets/sunnyside";
 
-interface Props {
-  inventory: Inventory;
-}
+type TabView = "craft";
 
-export const RetreatBlacksmith: React.FC<Props> = ({ inventory }) => {
-  const [isOpen, setIsOpen] = React.useState(false);
+export const RetreatBlacksmith: React.FC = () => {
+  const [isOpen, setIsOpen] = useState(false);
 
   const openBlacksmith = () => {
     setIsOpen(true);
@@ -56,7 +53,7 @@ export const RetreatBlacksmith: React.FC<Props> = ({ inventory }) => {
         </div>
       </div>
       <Modal centered show={isOpen} onHide={() => setIsOpen(false)}>
-        <CloseButtonPanel
+        <CloseButtonPanel<TabView>
           bumpkinParts={{
             body: "Goblin Potion",
             hair: "Blacksmith Hair",
@@ -66,7 +63,9 @@ export const RetreatBlacksmith: React.FC<Props> = ({ inventory }) => {
             background: "Farm Background",
             shoes: "Black Farmer Boots",
           }}
-          tabs={[{ name: "Craft", icon: SUNNYSIDE.icons.hammer }]}
+          tabs={[
+            { name: "Craft", icon: SUNNYSIDE.icons.hammer, view: "craft" },
+          ]}
           onClose={() => setIsOpen(false)}
         >
           <GoblinBlacksmithItems onClose={() => setIsOpen(false)} />

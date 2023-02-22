@@ -142,9 +142,7 @@ export const Game = () => {
                 <RetreatStorageHouse />
                 <RetreatHotAirBalloon />
                 <RetreatTailor />
-                <RetreatBlacksmith
-                  inventory={goblinState.context.state.inventory}
-                />
+                <RetreatBlacksmith />
                 <Auctioneer />
                 <Resale />
                 <RetreatWishingWell />

@@ -13,9 +13,11 @@ import { TreasureShopSell } from "./TreasureShopSell";
 import { SUNNYSIDE } from "assets/sunnyside";
 import { NPC } from "features/island/bumpkin/components/DynamicMiniNFT";
 
+type TabView = "buy" | "sell";
+
 export const TreasureShop: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
-  const [tab, setTab] = useState(0);
+  const [tab, setTab] = useState<TabView>("buy");
 
   return (
     <MapPlacement x={-5} y={-3} height={4} width={4}>
@@ -56,7 +58,7 @@ export const TreasureShop: React.FC = () => {
       </div>
 
       <Modal centered show={showModal} onHide={() => setShowModal(false)}>
-        <CloseButtonPanel
+        <CloseButtonPanel<TabView>
           onClose={() => setShowModal(false)}
           bumpkinParts={{
             body: "Pirate Potion",
@@ -73,17 +75,19 @@ export const TreasureShop: React.FC = () => {
             {
               icon: SUNNYSIDE.tools.sand_shovel,
               name: "Buy",
+              view: "buy",
             },
             {
               icon: SUNNYSIDE.resource.starfish,
               name: "Sell",
+              view: "sell",
             },
           ]}
         >
-          {tab === 0 && (
+          {tab === "buy" && (
             <TreasureShopItems onClose={() => setShowModal(false)} />
           )}
-          {tab === 1 && <TreasureShopSell />}
+          {tab === "sell" && <TreasureShopSell />}
         </CloseButtonPanel>
       </Modal>
     </MapPlacement>

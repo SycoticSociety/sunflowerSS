@@ -24,8 +24,8 @@ interface Props {
 }
 
 export type TabItems = Record<string, { items: object }>;
-
 export type Inventory = Partial<Record<InventoryItemName, Decimal>>;
+type TabView = "basket" | "chest" | "buildings";
 
 export const InventoryItemsModal: React.FC<Props> = ({
   show,
@@ -40,30 +40,36 @@ export const InventoryItemsModal: React.FC<Props> = ({
   isSaving,
   isFarming,
 }) => {
-  const [currentTab, setCurrentTab] = useState<number>(0);
+  const [currentTab, setCurrentTab] = useState<TabView>("basket");
 
   return (
     <Modal size="lg" centered show={show} onHide={onHide}>
-      <CloseButtonPanel
+      <CloseButtonPanel<TabView>
         tabs={[
-          { icon: SUNNYSIDE.icons.basket, name: "Basket" },
-          { icon: chest, name: "Chest" },
+          { icon: SUNNYSIDE.icons.basket, name: "Basket", view: "basket" },
+          { icon: chest, name: "Chest", view: "chest" },
           ...(isFarming
-            ? [{ icon: SUNNYSIDE.icons.hammer, name: "Buildings" }]
+            ? [
+                {
+                  icon: SUNNYSIDE.icons.hammer,
+                  name: "Buildings",
+                  view: "buildings" as TabView,
+                },
+              ]
             : []),
         ]}
         currentTab={currentTab}
         setCurrentTab={setCurrentTab}
         onClose={onHide}
       >
-        {currentTab === 0 && (
+        {currentTab === "basket" && (
           <Basket
             gameState={state}
             selected={selectedBasketItem}
             onSelect={onSelectBasketItem}
           />
         )}
-        {currentTab === 1 && (
+        {currentTab === "chest" && (
           <Chest
             state={state}
             selected={selectedChestItem}
@@ -74,7 +80,7 @@ export const InventoryItemsModal: React.FC<Props> = ({
             isSaving={isSaving}
           />
         )}
-        {currentTab === 2 && <Buildings onClose={onHide} />}
+        {currentTab === "buildings" && <Buildings onClose={onHide} />}
       </CloseButtonPanel>
     </Modal>
   );

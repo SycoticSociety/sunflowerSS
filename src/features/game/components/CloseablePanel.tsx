@@ -1,4 +1,4 @@
-import React from "react";
+import React, { PropsWithChildren } from "react";
 
 import { PIXEL_SCALE } from "features/game/lib/constants";
 import { Panel } from "../../../components/ui/Panel";
@@ -8,15 +8,16 @@ import { SquareIcon } from "components/ui/SquareIcon";
 import { SUNNYSIDE } from "assets/sunnyside";
 import classNames from "classnames";
 
-export interface PanelTabs {
+export interface PanelTabs<T> {
   icon: string;
   name: string;
+  view: T;
 }
 
-interface Props {
-  tabs?: PanelTabs[];
-  currentTab?: number;
-  setCurrentTab?: React.Dispatch<React.SetStateAction<number>>;
+interface Props<T> {
+  tabs?: PanelTabs<T>[];
+  currentTab?: T;
+  setCurrentTab?: React.Dispatch<React.SetStateAction<T>>;
   title?: string | JSX.Element;
   onClose?: () => void;
   onBack?: () => void;
@@ -36,9 +37,9 @@ interface Props {
  * @className Additional class name for the parent panel.
  * @children The panel children content.
  */
-export const CloseButtonPanel: React.FC<Props> = ({
+export const CloseButtonPanel = <T,>({
   tabs,
-  currentTab = 0,
+  currentTab,
   setCurrentTab,
   title,
   onClose,
@@ -46,9 +47,9 @@ export const CloseButtonPanel: React.FC<Props> = ({
   bumpkinParts,
   className,
   children,
-}) => {
-  const handleTabClick = (index: number) => {
-    setCurrentTab && setCurrentTab(index);
+}: PropsWithChildren<Props<T>>): JSX.Element => {
+  const handleTabClick = (view: T) => {
+    setCurrentTab && setCurrentTab(view);
   };
 
   const showCloseButton = !!onClose;
@@ -76,8 +77,8 @@ export const CloseButtonPanel: React.FC<Props> = ({
                 key={`tab-${index}`}
                 isFirstTab={index === 0}
                 className="flex items-center"
-                isActive={currentTab === index}
-                onClick={() => handleTabClick(index)}
+                isActive={currentTab === tab.view}
+                onClick={() => handleTabClick(tab.view)}
               >
                 <SquareIcon icon={tab.icon} width={7} />
                 <span className="text-xs sm:text-sm text-ellipsis ml-1 p-1">

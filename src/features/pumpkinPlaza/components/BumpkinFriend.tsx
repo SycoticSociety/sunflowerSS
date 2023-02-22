@@ -7,52 +7,57 @@ import { BumpkinStats } from "./BumpkinStats";
 import { BumpkinTrade } from "./BumpkinTrade";
 import { BumpkinModerate } from "./BumpkinModerate";
 import { useActor } from "@xstate/react";
-
 import * as AuthProvider from "features/auth/lib/Provider";
+
+type TabView = "stats" | "trade" | "moderate";
 
 interface Props {
   bumpkin: Bumpkin;
   accountId: number;
   onClose: () => void;
 }
+
 export const BumpkinFriend: React.FC<Props> = ({
   bumpkin,
   accountId,
   onClose,
 }) => {
-  const [tab, setTab] = useState(0);
+  const [tab, setTab] = useState<TabView>("stats");
   const { authService } = useContext(AuthProvider.Context);
-  const [authState, send] = useActor(authService);
-
-  const tabs = [
-    {
-      icon: SUNNYSIDE.icons.player,
-      name: "Player",
-    },
-    {
-      icon: SUNNYSIDE.icons.treasure,
-      name: "Shop",
-    },
-  ];
-
-  if (authState.context.token?.userAccess.admin) {
-    tabs.push({
-      icon: SUNNYSIDE.icons.death,
-      name: "Mod",
-    });
-  }
+  const [authState] = useActor(authService);
+  const isAdmin = authState.context.token?.userAccess.admin;
 
   return (
-    <CloseButtonPanel
+    <CloseButtonPanel<TabView>
       currentTab={tab}
       setCurrentTab={setTab}
-      tabs={tabs}
+      tabs={[
+        {
+          icon: SUNNYSIDE.icons.player,
+          name: "Player",
+          view: "stats",
+        },
+        {
+          icon: SUNNYSIDE.icons.treasure,
+          name: "Shop",
+          view: "trade",
+        },
+        ...(isAdmin
+          ? [
+              {
+                icon: SUNNYSIDE.icons.death,
+                name: "Mod",
+                view: "moderate" as ViewState,
+              },
+            ]
+          : []),
+      ]}
       bumpkinParts={bumpkin.equipped}
       onClose={onClose}
     >
-      {tab === 0 && <BumpkinStats bumpkin={bumpkin} />}
-      {tab === 1 && <BumpkinTrade accountId={accountId} />}
-      {tab === 2 && <BumpkinModerate accountId={accountId} />}
+      {tab === "stats" && <BumpkinStats bumpkin={bumpkin} />}
+      {tab === "trade" && <BumpkinTrade accountId={accountId} />}
+      {tab === "moderate" && <BumpkinModerate accountId={accountId} />}
     </CloseButtonPanel>
   );
 };
