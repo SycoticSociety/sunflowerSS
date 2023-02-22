@@ -77,7 +77,7 @@ export const FeedBumpkinDetails: React.FC<Props> = ({
   };
 
   return (
-    <div className="flex flex-col justify-center">
+    <div className="flex flex-col justify-between h-full">
       <div className="flex flex-col justify-center p-2 pb-0">
         {getItemDetail()}
         {getProperties()}

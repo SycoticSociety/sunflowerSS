@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 // Bodies
 import beigeBody from "assets/npc-layers/beige_body.png";
@@ -91,10 +91,9 @@ import {
   BumpkinDress,
 } from "features/game/types/bumpkin";
 import { PIXEL_SCALE } from "features/game/lib/constants";
-import { Context } from "features/game/GameProvider";
-import { ConsumableName } from "features/game/types/consumables";
-import { FeedModal } from "./FeedModal";
 import classNames from "classnames";
+import { BumpkinPanel } from "features/bumpkins/components/BumpkinPanel";
+import Modal from "react-bootstrap/esm/Modal";
 
 type VisiblePart =
   | BumpkinBody
@@ -219,13 +218,7 @@ export const DynamicMiniNFT: React.FC<DynamicMiniNFTProps> = ({
   coat,
   dress,
 }) => {
-  const { gameService } = useContext(Context);
-
-  const [open, setOpen] = useState(false);
-
-  const eat = (food: ConsumableName) => {
-    gameService.send("bumpkin.feed", { food });
-  };
+  const [showModal, setShowModal] = useState(false);
 
   return (
     <>
@@ -240,13 +233,11 @@ export const DynamicMiniNFT: React.FC<DynamicMiniNFTProps> = ({
         wings={wings}
         coat={coat}
         dress={dress}
-        onClick={() => setOpen(true)}
+        onClick={() => setShowModal(true)}
       />
-      <FeedModal
-        isOpen={open}
-        onClose={() => setOpen(false)}
-        onFeed={(food) => eat(food)}
-      />
+      <Modal show={showModal} centered onHide={() => setShowModal(false)}>
+        <BumpkinPanel onClose={() => setShowModal(false)} />
+      </Modal>
     </>
   );
 };

@@ -1,15 +1,8 @@
 import { useActor } from "@xstate/react";
 import React, { useContext, useEffect, useState } from "react";
-import levelIcon from "assets/icons/level_up.png";
 import { Context } from "features/game/GameProvider";
-import { Equipped as BumpkinParts } from "features/game/types/bumpkin";
-import { DynamicNFT } from "./DynamicNFT";
 import { OuterPanel } from "components/ui/Panel";
-import {
-  getBumpkinLevel,
-  getExperienceToNextLevel,
-  isMaxLevel,
-} from "features/game/lib/level";
+
 import { Achievements } from "./Achievements";
 import { AchievementBadges } from "./AchievementBadges";
 import { Skills } from "features/bumpkins/components/Skills";
@@ -21,6 +14,7 @@ import { Bumpkin } from "features/game/types/game";
 import { SUNNYSIDE } from "assets/sunnyside";
 import { CloseButtonPanel } from "features/game/components/CloseablePanel";
 import seedSpecialist from "assets/skills/seed_specialist.png";
+import foodIcon from "src/assets/food/chicken_drumstick.png";
 import { getUnclaimedAchievementNames } from "features/game/events/landExpansion/claimAchievement";
 import { SquareIcon } from "components/ui/SquareIcon";
 import {
@@ -31,17 +25,22 @@ import {
   acknowledgeSkillPoints,
   hasUnacknowledgedSkillPoints,
 } from "features/island/bumpkin/lib/skillPointStorage";
-import { ResizableBar } from "components/ui/ProgressBar";
+import { Feed } from "features/bumpkins/components/Feed";
+import { getEntries } from "features/game/types/craftables";
+import { CONSUMABLES } from "features/game/types/consumables";
 
-export type ViewState = "home" | "achievements" | "skills";
+export type TabView = "home" | "achievements" | "skills";
 
 interface Props {
-  initialView: ViewState;
+  initialView?: TabView;
   onClose: () => void;
 }
 
-export const BumpkinPanel: React.FC<Props> = ({ initialView, onClose }) => {
-  const [view, setView] = useState<ViewState>(initialView);
+export const BumpkinPanel: React.FC<Props> = ({
+  initialView = "home",
+  onClose,
+}) => {
+  const [view, setView] = useState<TabView>(initialView);
   const { gameService } = useContext(Context);
   const [gameState] = useActor(gameService);
   const { state } = gameState.context;
@@ -78,63 +77,14 @@ export const BumpkinPanel: React.FC<Props> = ({ initialView, onClose }) => {
     }
   }, [view]);
 
-  if (view !== "home") {
-    return (
-      <CloseButtonPanel
-        onClose={onClose}
-        tabs={[
-          { icon: seedSpecialist, name: "Skills" },
-          { icon: SUNNYSIDE.icons.player, name: "Achievements" },
-        ]}
-        currentTab={view === "skills" ? 0 : 1}
-        setCurrentTab={(e) => setView(e === 0 ? "skills" : "achievements")}
-      >
-        {view === "skills" && (
-          <Skills onBack={() => setView("home")} readonly={isVisiting} />
-        )}
-        {view === "achievements" && (
-          <Achievements onBack={() => setView("home")} readonly={isVisiting} />
-        )}
-      </CloseButtonPanel>
-    );
-  }
-
-  const experience = state.bumpkin?.experience ?? 0;
-  const level = getBumpkinLevel(experience);
-  const maxLevel = isMaxLevel(experience);
-  const { currentExperienceProgress, experienceToNextLevel } =
-    getExperienceToNextLevel(experience);
-
   const hasAvailableSkillPoints =
     getAvailableBumpkinSkillPoints(state.bumpkin) > 0;
   const hasAvailableAchievements =
     getUnclaimedAchievementNames(state).length > 0;
 
-  const levelInfo = () => (
-    <div className="flex flex-col items-start">
-      {/* Level */}
-      <p className="text-base">{`Level ${level}${maxLevel ? " (Max)" : ""}`}</p>
-
-      <div className="flex flex-row items-center my-1">
-        {/* Level icon */}
-        <SquareIcon icon={levelIcon} width={7} />
-
-        {/* XP */}
-        <p className="text-xxs ml-1">
-          {`${Math.floor(currentExperienceProgress)}/${
-            maxLevel ? "-" : Math.floor(experienceToNextLevel)
-          } XP`}
-        </p>
-      </div>
-
-      {/* XP bar */}
-      <ResizableBar
-        percentage={(currentExperienceProgress / experienceToNextLevel) * 100}
-        type={"progress"}
-        outerDimensions={{ width: 48, height: 7 }}
-      />
-    </div>
-  );
+  const availableFood = getEntries(CONSUMABLES)
+    .filter(([name, _]) => !!state.inventory[name]?.gt(0))
+    .map(([_, consumable]) => consumable);
 
   const visitBumpkinLink = () => (
     <div className="flex flex-col justify-start sm:justify-center">
@@ -181,27 +131,28 @@ export const BumpkinPanel: React.FC<Props> = ({ initialView, onClose }) => {
   );
 
   return (
-    <CloseButtonPanel onClose={onClose} title={`Bumpkin #${state.bumpkin?.id}`}>
-      <div className="flex flex-col">
-        <div className="w-full flex flex-wrap p-0.5 mb-0.5">
-          <div className="w-1/2 rounded-md overflow-hidden">
-            <DynamicNFT
-              showBackground
-              bumpkinParts={state.bumpkin?.equipped as BumpkinParts}
-            />
-          </div>
-          <div className="flex flex-1 flex-col justify-start ml-2 gap-y-1">
-            {levelInfo()}
-            <div className="flex-1" />
-            {visitBumpkinLink()}
-          </div>
-        </div>
-
-        <div className="flex flex-col w-full gap-y-1">
-          {badgeContainer("Skills")}
-          {badgeContainer("Achievements")}
-        </div>
-      </div>
+    <CloseButtonPanel<TabView>
+      bumpkinParts={state.bumpkin?.equipped}
+      onClose={onClose}
+      tabs={[
+        { icon: foodIcon, name: "Feed", view: "home" },
+        { icon: seedSpecialist, name: "Skills", view: "skills" },
+        {
+          icon: SUNNYSIDE.icons.player,
+          name: "Achievements",
+          view: "achievements",
+        },
+      ]}
+      currentTab={view}
+      setCurrentTab={(e) => setView(e)}
+    >
+      {view === "home" && <Feed food={availableFood} />}
+      {view === "skills" && (
+        <Skills onBack={() => setView("home")} readonly={isVisiting} />
+      )}
+      {view === "achievements" && (
+        <Achievements onBack={() => setView("home")} readonly={isVisiting} />
+      )}
     </CloseButtonPanel>
   );
 };

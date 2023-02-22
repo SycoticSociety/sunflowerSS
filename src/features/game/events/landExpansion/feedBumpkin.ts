@@ -18,6 +18,8 @@ type Options = {
 export function feedBumpkin({ state, action }: Options): GameState {
   const stateCopy = cloneDeep(state);
 
+  console.log({ action });
+
   const bumpkin = stateCopy.bumpkin;
   const collectibles = stateCopy.collectibles;
   const inventory = stateCopy.inventory;

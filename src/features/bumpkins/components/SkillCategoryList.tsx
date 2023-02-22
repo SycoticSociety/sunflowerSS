@@ -45,43 +45,60 @@ export const SkillCategoryList: React.FC<Props> = ({
 
   const { bumpkin } = state;
   return (
-    <>
-      {backNavigationView}
-      {SKILL_TREE_CATEGORIES.map((category) => {
-        const skills = getSkills(category);
-        const icon = iconList[skills[0].tree];
-        const skillsAcquiredInCategoryCount = getKeys({
-          ...bumpkin?.skills,
-        }).filter((acquiredSkillName) =>
-          skills.find((skill) => skill.name === acquiredSkillName)
-        ).length;
+    <div className="flex flex-col space-y-2 sm:flex-row sm:justify-between sm:space-x-2">
+      <div className="flex flex-col flex-1">
+        {backNavigationView}
+        {SKILL_TREE_CATEGORIES.map((category) => {
+          const skills = getSkills(category);
+          const icon = iconList[skills[0].tree];
+          const skillsAcquiredInCategoryCount = getKeys({
+            ...bumpkin?.skills,
+          }).filter((acquiredSkillName) =>
+            skills.find((skill) => skill.name === acquiredSkillName)
+          ).length;
 
-        return (
-          <div key={category} onClick={() => onClick(category)}>
-            <OuterPanel
-              className="flex relative items-center cursor-pointer hover:bg-brown-200"
-              style={{
-                marginTop: `${PIXEL_SCALE * 2}px`,
-              }}
-            >
-              <div className="flex justify-center items-center">
-                <SquareIcon icon={icon} width={14} />
-                <span className="text-sm ml-1">{category}</span>
-              </div>
-              <Label
-                type="pixelated"
-                className="absolute pointer-events-none"
+          return (
+            <div key={category} onClick={() => onClick(category)}>
+              <OuterPanel
+                className="flex relative items-center cursor-pointer hover:bg-brown-200"
                 style={{
-                  top: `${PIXEL_SCALE * -5}px`,
-                  right: `${PIXEL_SCALE * -3}px`,
+                  marginTop: `${PIXEL_SCALE * 2}px`,
                 }}
               >
-                {`${skillsAcquiredInCategoryCount}/${skills.length}`}
-              </Label>
-            </OuterPanel>
-          </div>
-        );
-      })}
-    </>
+                <div className="flex justify-center items-center">
+                  <SquareIcon icon={icon} width={14} />
+                  <span className="text-sm ml-1">{category}</span>
+                </div>
+                <Label
+                  type="pixelated"
+                  className="absolute pointer-events-none"
+                  style={{
+                    top: `${PIXEL_SCALE * -5}px`,
+                    right: `${PIXEL_SCALE * -3}px`,
+                  }}
+                >
+                  {`${skillsAcquiredInCategoryCount}/${skills.length}`}
+                </Label>
+              </OuterPanel>
+            </div>
+          );
+        })}
+      </div>
+      {/* <div className="flex flex-col w-full sm:w-2/6">
+        <span>Badges</span>
+        <OuterPanel
+          // className="w-full sm:w-2/6"
+          style={{
+            paddingTop: `${PIXEL_SCALE * 2}px`,
+            paddingLeft: `${PIXEL_SCALE * 2}px`,
+          }}
+        >
+          <SkillBadges
+            inventory={state.inventory}
+            bumpkin={state.bumpkin as Bumpkin}
+          />
+        </OuterPanel>
+      </div> */}
+    </div>
   );
 };

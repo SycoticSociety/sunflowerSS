@@ -6,27 +6,29 @@ import { Button } from "components/ui/Button";
 import { ToastContext } from "features/game/toast/ToastQueueProvider";
 import { Context } from "features/game/GameProvider";
 import { ITEM_DETAILS } from "features/game/types/images";
-import {
-  Consumable,
-  ConsumableName,
-  isJuice,
-} from "features/game/types/consumables";
+import { Consumable, isJuice } from "features/game/types/consumables";
 import { getFoodExpBoost } from "features/game/expansion/lib/boosts";
 
-import heart from "assets/icons/level_up.png";
+import levelIcon from "assets/icons/level_up.png";
 import firePit from "src/assets/buildings/fire_pit.png";
 import { Bumpkin } from "features/game/types/game";
 import { SplitScreenView } from "components/ui/SplitScreenView";
 import { FeedBumpkinDetails } from "components/ui/layouts/FeedBumpkinDetails";
 import Decimal from "decimal.js-light";
 import { PIXEL_SCALE } from "features/game/lib/constants";
+import { SquareIcon } from "components/ui/SquareIcon";
+import { ResizableBar } from "components/ui/ProgressBar";
+import {
+  getBumpkinLevel,
+  getExperienceToNextLevel,
+  isMaxLevel,
+} from "features/game/lib/level";
 
 interface Props {
   food: Consumable[];
-  onFeed: (name: ConsumableName) => void;
 }
 
-export const Feed: React.FC<Props> = ({ food, onFeed }) => {
+export const Feed: React.FC<Props> = ({ food }) => {
   const [selected, setSelected] = useState<Consumable | undefined>(food[0]);
   const { setToast } = useContext(ToastContext);
   const { gameService, shortcutItem } = useContext(Context);
@@ -37,6 +39,11 @@ export const Feed: React.FC<Props> = ({ food, onFeed }) => {
     },
   ] = useActor(gameService);
   const inventory = state.inventory;
+  const experience = state.bumpkin?.experience ?? 0;
+  const level = getBumpkinLevel(experience);
+  const maxLevel = isMaxLevel(experience);
+  const { currentExperienceProgress, experienceToNextLevel } =
+    getExperienceToNextLevel(experience);
 
   useEffect(() => {
     if (food.length) {
@@ -47,10 +54,11 @@ export const Feed: React.FC<Props> = ({ food, onFeed }) => {
   }, [food.length]);
 
   const feed = (food: Consumable) => {
-    onFeed(food.name);
+    console.log("feedcalled");
+    gameService.send("bumpkin.feed", { food: food.name });
 
     setToast({
-      icon: heart,
+      icon: levelIcon,
       content: `+${getFoodExpBoost(
         food,
         state.bumpkin as Bumpkin,
@@ -64,6 +72,32 @@ export const Feed: React.FC<Props> = ({ food, onFeed }) => {
 
     shortcutItem(food.name);
   };
+
+  const levelInfo = () => (
+    <div className="flex flex-col items-start mb-3 mt-1 px-1">
+      {/* Level */}
+      <p className="text-base">{`Level ${level}${maxLevel ? " (Max)" : ""}`}</p>
+
+      <div className="flex flex-row items-center my-1">
+        {/* Level icon */}
+        <SquareIcon icon={levelIcon} width={7} />
+
+        {/* XP */}
+        <p className="text-xxs ml-1">
+          {`${Math.floor(currentExperienceProgress)}/${
+            maxLevel ? "-" : Math.floor(experienceToNextLevel)
+          } XP`}
+        </p>
+      </div>
+
+      {/* XP bar */}
+      <ResizableBar
+        percentage={(currentExperienceProgress / experienceToNextLevel) * 100}
+        type={"progress"}
+        outerDimensions={{ width: 48, height: 7 }}
+      />
+    </div>
+  );
 
   if (!selected) {
     return (
@@ -114,17 +148,20 @@ export const Feed: React.FC<Props> = ({ food, onFeed }) => {
         />
       }
       content={
-        <>
-          {food.map((item) => (
-            <Box
-              isSelected={selected.name === item.name}
-              key={item.name}
-              onClick={() => setSelected(item)}
-              image={ITEM_DETAILS[item.name].image}
-              count={inventory[item.name]}
-            />
-          ))}
-        </>
+        <div className="flex flex-col">
+          {levelInfo()}
+          <div className="flex flex-wrap">
+            {food.map((item) => (
+              <Box
+                isSelected={selected.name === item.name}
+                key={item.name}
+                onClick={() => setSelected(item)}
+                image={ITEM_DETAILS[item.name].image}
+                count={inventory[item.name]}
+              />
+            ))}
+          </div>
+        </div>
       }
     />
   );
