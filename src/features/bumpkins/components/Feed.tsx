@@ -123,7 +123,7 @@ export const Feed: React.FC<Props> = ({ food }) => {
 
   return (
     <SplitScreenView
-      header={
+      panelContent={
         <FeedBumpkinDetails
           details={{
             item: selected.name,
@@ -147,7 +147,7 @@ export const Feed: React.FC<Props> = ({ food }) => {
           }
         />
       }
-      content={
+      mainContent={
         <div className="flex flex-col">
           {levelInfo()}
           <div className="flex flex-wrap">

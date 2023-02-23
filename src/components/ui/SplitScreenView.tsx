@@ -8,8 +8,8 @@ interface Props {
   wideModal?: boolean;
   showHeader?: boolean;
   contentScrollable?: boolean;
-  header: JSX.Element;
-  content: JSX.Element;
+  panelContent: JSX.Element;
+  mainContent: JSX.Element;
 }
 
 export const SplitScreenView: React.FC<Props> = ({
@@ -18,8 +18,8 @@ export const SplitScreenView: React.FC<Props> = ({
   wideModal = false,
   showHeader = true,
   contentScrollable = true,
-  header,
-  content,
+  panelContent,
+  mainContent,
 }: Props) => {
   return (
     <div className="flex flex-col-reverse sm:flex-row">
@@ -37,7 +37,7 @@ export const SplitScreenView: React.FC<Props> = ({
         )}
         ref={divRef}
       >
-        {content}
+        {mainContent}
       </div>
       {showHeader && (
         <OuterPanel
@@ -45,7 +45,7 @@ export const SplitScreenView: React.FC<Props> = ({
             "lg:w-1/4": wideModal,
           })}
         >
-          {header}
+          {panelContent}
         </OuterPanel>
       )}
     </div>

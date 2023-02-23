@@ -128,7 +128,7 @@ export const Basket: React.FC<Prop> = ({ gameState, selected, onSelect }) => {
       tallMobileContent={true}
       wideModal={true}
       showHeader={!!selected}
-      header={
+      panelContent={
         selected && (
           <InventoryItemDetails
             details={{
@@ -158,7 +158,7 @@ export const Basket: React.FC<Prop> = ({ gameState, selected, onSelect }) => {
           />
         )
       }
-      content={
+      mainContent={
         <>
           {itemsSection("Seeds", allSeeds)}
           {itemsSection("Tools", allTools)}

@@ -115,7 +115,7 @@ export const Chest: React.FC<Props> = ({
         tallMobileContent={true}
         wideModal={true}
         showHeader={!!selectedChestItem}
-        header={
+        panelContent={
           selectedChestItem && (
             <InventoryItemDetails
               details={{
@@ -134,7 +134,7 @@ export const Chest: React.FC<Props> = ({
             />
           )
         }
-        content={
+        mainContent={
           <>
             {Object.values(collectibles) && (
               <div className="flex flex-col pl-2">

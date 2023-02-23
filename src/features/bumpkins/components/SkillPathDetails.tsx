@@ -74,7 +74,7 @@ export const SkillPathDetails: React.FC<Props> = ({
       <SplitScreenView
         tallMobileContent={true}
         contentScrollable={false}
-        header={
+        panelContent={
           <SkillDetails
             gameState={gameState.context.state}
             details={{
@@ -133,7 +133,7 @@ export const SkillPathDetails: React.FC<Props> = ({
             }
           />
         }
-        content={
+        mainContent={
           <>
             <div className="hidden sm:block -ml-1 -mt-2">
               {backNavigationView}

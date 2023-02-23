@@ -103,7 +103,7 @@ export const Achievements: React.FC<Props> = ({ onBack, readonly }) => {
       <SplitScreenView
         tallMobileContent={readonly || isAlreadyClaimed}
         contentScrollable={false}
-        header={
+        panelContent={
           <AchievementDetails
             gameState={state}
             details={{
@@ -135,7 +135,7 @@ export const Achievements: React.FC<Props> = ({ onBack, readonly }) => {
             }
           />
         }
-        content={
+        mainContent={
           <>
             <div className="hidden sm:block w-full -ml-1 -mt-2">
               {backNavigationView}
