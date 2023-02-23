@@ -18,6 +18,8 @@ import crops from "assets/skills/land/skill-tree-icon/crops.png";
 import rocks from "assets/skills/land/skill-tree-icon/rocks.png";
 import trees from "assets/skills/land/skill-tree-icon/trees.png";
 import { SquareIcon } from "components/ui/SquareIcon";
+import { SkillBadges } from "./SkillBadges";
+import { Bumpkin } from "features/game/types/game";
 
 const iconList = {
   Crops: crops,
@@ -29,8 +31,10 @@ const iconList = {
 
 interface Props {
   onClick: (category: BumpkinSkillTree) => void;
-  backNavigationView: JSX.Element;
+  backNavigationView?: JSX.Element;
 }
+
+const CONTENT_HEIGHT = 380;
 
 export const SkillCategoryList: React.FC<Props> = ({
   onClick,
@@ -44,10 +48,15 @@ export const SkillCategoryList: React.FC<Props> = ({
   ] = useActor(gameService);
 
   const { bumpkin } = state;
+  const hasSkills = getKeys(bumpkin?.skills || {}).length > 0;
+
   return (
-    <div className="flex flex-col space-y-2 sm:flex-row sm:justify-between sm:space-x-2">
-      <div className="flex flex-col flex-1">
-        {backNavigationView}
+    <div
+      className="flex flex-col space-y-2 sm:flex-row sm:justify-between sm:space-y-0 sm:space-x-2 overflow-y-auto scrollable"
+      style={{ maxHeight: CONTENT_HEIGHT }}
+    >
+      <div className="flex flex-col flex-1 mr-1">
+        <div className="h-8 flex items-center">{backNavigationView}</div>
         {SKILL_TREE_CATEGORIES.map((category) => {
           const skills = getSkills(category);
           const icon = iconList[skills[0].tree];
@@ -84,21 +93,26 @@ export const SkillCategoryList: React.FC<Props> = ({
           );
         })}
       </div>
-      {/* <div className="flex flex-col w-full sm:w-2/6">
-        <span>Badges</span>
-        <OuterPanel
-          // className="w-full sm:w-2/6"
-          style={{
-            paddingTop: `${PIXEL_SCALE * 2}px`,
-            paddingLeft: `${PIXEL_SCALE * 2}px`,
-          }}
-        >
-          <SkillBadges
-            inventory={state.inventory}
-            bumpkin={state.bumpkin as Bumpkin}
-          />
-        </OuterPanel>
-      </div> */}
+      {hasSkills && (
+        <div className="flex flex-col sm:w-2/6 mr-1">
+          <div className="h-8 flex items-center">
+            <span className="text-sm">My Skills</span>
+          </div>
+          <OuterPanel
+            className="h-full"
+            style={{
+              paddingTop: `${PIXEL_SCALE * 2}px`,
+              paddingLeft: `${PIXEL_SCALE * 2}px`,
+              marginTop: `${PIXEL_SCALE * 2}px`,
+            }}
+          >
+            <SkillBadges
+              inventory={state.inventory}
+              bumpkin={state.bumpkin as Bumpkin}
+            />
+          </OuterPanel>
+        </div>
+      )}
     </div>
   );
 };

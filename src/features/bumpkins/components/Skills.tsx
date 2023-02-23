@@ -113,7 +113,7 @@ export const Skills: React.FC<Props> = ({ onBack, readonly }) => {
       {!selectedSkillPath && (
         <SkillCategoryList
           onClick={(category) => onSkillCategoryClickHandler(category)}
-          backNavigationView={backNavigationView()}
+          backNavigationView={!readonly ? skillPointsInfo() : undefined}
         />
       )}
       {selectedSkillPath && (
