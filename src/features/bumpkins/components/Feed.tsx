@@ -16,13 +16,8 @@ import { SplitScreenView } from "components/ui/SplitScreenView";
 import { FeedBumpkinDetails } from "components/ui/layouts/FeedBumpkinDetails";
 import Decimal from "decimal.js-light";
 import { PIXEL_SCALE } from "features/game/lib/constants";
-import { SquareIcon } from "components/ui/SquareIcon";
-import { ResizableBar } from "components/ui/ProgressBar";
-import {
-  getBumpkinLevel,
-  getExperienceToNextLevel,
-  isMaxLevel,
-} from "features/game/lib/level";
+
+import { LevelInfo } from "./LevelInfo";
 
 interface Props {
   food: Consumable[];
@@ -39,11 +34,6 @@ export const Feed: React.FC<Props> = ({ food }) => {
     },
   ] = useActor(gameService);
   const inventory = state.inventory;
-  const experience = state.bumpkin?.experience ?? 0;
-  const level = getBumpkinLevel(experience);
-  const maxLevel = isMaxLevel(experience);
-  const { currentExperienceProgress, experienceToNextLevel } =
-    getExperienceToNextLevel(experience);
 
   useEffect(() => {
     if (food.length) {
@@ -73,36 +63,10 @@ export const Feed: React.FC<Props> = ({ food }) => {
     shortcutItem(food.name);
   };
 
-  const levelInfo = () => (
-    <div className="flex flex-col items-start mb-3 mt-1 px-1">
-      {/* Level */}
-      <p className="text-base">{`Level ${level}${maxLevel ? " (Max)" : ""}`}</p>
-
-      <div className="flex flex-row items-center my-1">
-        {/* Level icon */}
-        <SquareIcon icon={levelIcon} width={7} />
-
-        {/* XP */}
-        <p className="text-xxs ml-1">
-          {`${Math.floor(currentExperienceProgress)}/${
-            maxLevel ? "-" : Math.floor(experienceToNextLevel)
-          } XP`}
-        </p>
-      </div>
-
-      {/* XP bar */}
-      <ResizableBar
-        percentage={(currentExperienceProgress / experienceToNextLevel) * 100}
-        type={"progress"}
-        outerDimensions={{ width: 48, height: 7 }}
-      />
-    </div>
-  );
-
   if (!selected) {
     return (
-      <div className="flex flex-col items-center p-2">
-        <span className="text-base text-center mb-4">Hungry?</span>
+      <div className="flex flex-col p-2">
+        <span className="mb-4">Hungry?</span>
         <span className="w-full text-sm mb-3">
           You have no food in your inventory.
         </span>
@@ -149,7 +113,13 @@ export const Feed: React.FC<Props> = ({ food }) => {
       }
       mainContent={
         <div className="flex flex-col">
-          {levelInfo()}
+          <div className="px-1">
+            <LevelInfo
+              bumpkin={state.bumpkin as Bumpkin}
+              className="text-sm sm:text-base"
+            />
+            <p className="my-2">Food</p>
+          </div>
           <div className="flex flex-wrap">
             {food.map((item) => (
               <Box
