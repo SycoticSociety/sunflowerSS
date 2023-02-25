@@ -54,7 +54,6 @@ const INITIAL_EXPANSIONS: LandExpansion[] = [
   {
     createdAt: 2,
     readyAt: 0,
-
     plots: {
       0: {
         x: -2,
@@ -341,6 +340,17 @@ export const OFFLINE_FARM: GameState = {
         createdAt: 0,
       },
     ],
+    Tent: [
+      {
+        id: "123",
+        readyAt: 0,
+        coordinates: {
+          x: 5,
+          y: 3,
+        },
+        createdAt: 0,
+      },
+    ],
   },
   airdrops: [],
   collectibles: {
@@ -359,6 +369,84 @@ export const OFFLINE_FARM: GameState = {
   },
   mysteryPrizes: {},
   bumpkin: INITIAL_BUMPKIN,
+  bumpkins: {
+    wallet: {
+      1: INITIAL_BUMPKIN,
+      146: {
+        skills: {
+          "Happy Crop": 1,
+          "Coal Face": 1,
+          Cultivator: 5,
+          "Green Thumb": 5,
+          "Master Farmer": 1,
+          "Stable Hand": 5,
+          "Free Range": 1,
+        },
+        achievements: {
+          "Big Spender": 1,
+          Contractor: 1,
+          "Busy Bumpkin": 1,
+          Explorer: 1,
+        },
+        equipped: {
+          hair: "Rancher Hair",
+          secondaryTool: "Sunflower Shield",
+          shirt: "SFL T-Shirt",
+          pants: "Lumberjack Overalls",
+          background: "Seashore Background",
+          body: "Beige Farmer Potion",
+          shoes: "Brown Boots",
+          tool: "Farmer Pitchfork",
+        },
+        tokenUri:
+          "https://api-dev.sunflower-land.com/bumpkins/metadata/146_v1_48_1_6_40_19_34_23_0_0_31",
+        id: 146,
+        experience: 324923,
+      },
+      3: {
+        skills: {
+          "Happy Crop": 1,
+          Lumberjack: 1,
+          "Tree Hugger": 1,
+          "Green Thumb": 1,
+        },
+        achievements: {
+          "Big Spender": 1,
+          "Bumpkin Chainsaw Amateur": 1,
+          Driller: 1,
+          Canary: 1,
+          "Cool Flower": 1,
+          "Iron Eyes": 1,
+          "El Dorado": 1,
+          "Kiss the Cook": 1,
+          "Something Shiny": 1,
+          Craftmanship: 1,
+        },
+        equipped: {
+          coat: "Chef Apron",
+          hair: "Cupid Hair",
+          secondaryTool: "Sunflower Shield",
+          shirt: "Striped Blue Shirt",
+          pants: "Peasant Skirt",
+          background: "China Town Background",
+          wings: "Angel Wings",
+          hat: "Lion Dance Mask",
+          necklace: "Green Amulet",
+          body: "Goblin Potion",
+          shoes: "Peg Leg",
+          tool: "Golden Spatula",
+        },
+        tokenUri:
+          "https://api.sunflower-land.com/bumpkins/metadata/2_v1_83_4_97_88_39_89_58_84_30_31_16_0_0_73",
+        id: 3,
+        experience: 487630.86500000063,
+      },
+    },
+    farming: {
+      primary: 1,
+      others: [],
+    },
+  },
   pumpkinPlaza: {},
   tradeOffer: {
     amount: 1,

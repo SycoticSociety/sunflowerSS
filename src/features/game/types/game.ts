@@ -366,6 +366,14 @@ export type TreasureHole = {
   discovered: InventoryItemName | null;
 };
 
+export type Bumpkins = {
+  wallet: Record<number, Bumpkin>;
+  farming: {
+    primary: number;
+    others: number[];
+  };
+};
+
 export interface GameState {
   id?: number;
   balance: Decimal;
@@ -391,6 +399,7 @@ export interface GameState {
 
   expansions: LandExpansion[];
   expansionRequirements?: ExpansionRequirements;
+  bumpkins?: Bumpkins;
   bumpkin?: Bumpkin;
   buildings: Buildings;
   collectibles: Collectibles;
