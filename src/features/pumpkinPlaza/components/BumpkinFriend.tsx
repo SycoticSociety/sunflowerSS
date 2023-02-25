@@ -47,7 +47,7 @@ export const BumpkinFriend: React.FC<Props> = ({
               {
                 icon: SUNNYSIDE.icons.death,
                 name: "Mod",
-                view: "moderate" as ViewState,
+                view: "moderate" as TabView,
               },
             ]
           : []),

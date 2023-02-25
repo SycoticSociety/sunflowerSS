@@ -20,7 +20,7 @@ export const SplitScreenView: React.FC<Props> = ({
   contentScrollable = true,
   panelContent,
   mainContent,
-}: Props) => {
+}) => {
   return (
     <div className="flex flex-col-reverse sm:flex-row">
       <div

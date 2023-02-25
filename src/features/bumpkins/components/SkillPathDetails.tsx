@@ -72,7 +72,7 @@ export const SkillPathDetails: React.FC<Props> = ({
     <>
       <div className="sm:hidden">{backNavigationView}</div>
       <SplitScreenView
-        tallMobileContent={true}
+        tallMobileContent
         contentScrollable={false}
         panelContent={
           <SkillDetails

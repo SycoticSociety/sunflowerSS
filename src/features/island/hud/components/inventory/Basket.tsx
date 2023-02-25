@@ -125,8 +125,8 @@ export const Basket: React.FC<Prop> = ({ gameState, selected, onSelect }) => {
   return (
     <SplitScreenView
       divRef={divRef}
-      tallMobileContent={true}
-      wideModal={true}
+      tallMobileContent
+      wideModal
       showHeader={!!selected}
       panelContent={
         selected && (
