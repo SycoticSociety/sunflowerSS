@@ -15,9 +15,15 @@ type Options = {
   createdAt?: number;
 };
 
+export const BUMPKIN_COOLDOWN = 1000 * 60 * 60 * 24;
+
 const DEFAULT_BUMPKIN_ALLOWANCE = 1;
 
-export const placeBumpkin = ({ state, action }: Options): GameState => {
+export const placeBumpkin = ({
+  state,
+  action,
+  createdAt = Date.now(),
+}: Options): GameState => {
   const stateCopy = cloneDeep(state);
   const placedTents = (stateCopy.buildings.Tent || []).length;
 
@@ -55,6 +61,8 @@ export const placeBumpkin = ({ state, action }: Options): GameState => {
   stateCopy.bumpkins.farming.others.push({
     id: action.id,
     coordinates: action.coordinates,
+    readyAt: createdAt + BUMPKIN_COOLDOWN,
+    createdAt,
   });
 
   return stateCopy;

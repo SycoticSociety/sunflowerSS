@@ -1,7 +1,7 @@
 import { DEFAULT_BUMPKIN_POSITION } from "features/island/bumpkin/types/character";
 import { INITIAL_BUMPKIN, TEST_FARM } from "../../lib/constants";
 import { Bumpkins, GameState } from "../../types/game";
-import { placeBumpkin } from "./placeBumpkin";
+import { BUMPKIN_COOLDOWN, placeBumpkin } from "./placeBumpkin";
 
 const WALLET_BUMPKINS: Bumpkins["wallet"] = {
   1: INITIAL_BUMPKIN,
@@ -32,6 +32,8 @@ describe("placeBumpkin", () => {
               primary: {
                 id: 1,
                 coordinates: DEFAULT_BUMPKIN_POSITION,
+                readyAt: 0,
+                createdAt: 0,
               },
               others: [],
             },
@@ -60,6 +62,8 @@ describe("placeBumpkin", () => {
               primary: {
                 id: 1,
                 coordinates: DEFAULT_BUMPKIN_POSITION,
+                createdAt: 0,
+                readyAt: 0,
               },
               others: [],
             },
@@ -88,11 +92,15 @@ describe("placeBumpkin", () => {
               primary: {
                 id: 1,
                 coordinates: DEFAULT_BUMPKIN_POSITION,
+                readyAt: 0,
+                createdAt: 0,
               },
               others: [
                 {
                   id: 3,
                   coordinates: DEFAULT_BUMPKIN_POSITION,
+                  readyAt: 0,
+                  createdAt: 0,
                 },
               ],
             },
@@ -121,6 +129,8 @@ describe("placeBumpkin", () => {
               primary: {
                 id: 1,
                 coordinates: DEFAULT_BUMPKIN_POSITION,
+                readyAt: 0,
+                createdAt: 0,
               },
               others: [],
             },
@@ -149,15 +159,21 @@ describe("placeBumpkin", () => {
               primary: {
                 id: 1,
                 coordinates: DEFAULT_BUMPKIN_POSITION,
+                readyAt: 0,
+                createdAt: 0,
               },
               others: [
                 {
                   id: 2,
                   coordinates: DEFAULT_BUMPKIN_POSITION,
+                  readyAt: 0,
+                  createdAt: 0,
                 },
                 {
                   id: 3,
                   coordinates: DEFAULT_BUMPKIN_POSITION,
+                  readyAt: 0,
+                  createdAt: 0,
                 },
               ],
             },
@@ -198,6 +214,8 @@ describe("placeBumpkin", () => {
   });
 
   it("places a bumpkin", () => {
+    const dateNow = Date.now();
+
     const state = placeBumpkin({
       state: {
         ...GAME_STATE,
@@ -207,6 +225,8 @@ describe("placeBumpkin", () => {
             primary: {
               id: 1,
               coordinates: DEFAULT_BUMPKIN_POSITION,
+              readyAt: 0,
+              createdAt: 0,
             },
             others: [],
           },
@@ -233,10 +253,16 @@ describe("placeBumpkin", () => {
           y: 0,
         },
       },
+      createdAt: dateNow,
     });
 
     expect(state.bumpkins?.farming.others).toEqual([
-      { id: 4, coordinates: { x: 2, y: 0 } },
+      {
+        id: 4,
+        coordinates: { x: 2, y: 0 },
+        createdAt: dateNow,
+        readyAt: dateNow + BUMPKIN_COOLDOWN,
+      },
     ]);
   });
 });
