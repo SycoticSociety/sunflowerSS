@@ -19,6 +19,7 @@ import { TreasureName } from "./treasure";
 import { GoblinBlacksmithItemName, HeliosBlacksmithItem } from "./collectibles";
 import { AuctioneerItemName } from "./auctioneer";
 import { TreasureToolName } from "./tools";
+import { Coordinates } from "../expansion/components/MapPlacement";
 
 export type Reward = {
   sfl?: Decimal;
@@ -366,11 +367,16 @@ export type TreasureHole = {
   discovered: InventoryItemName | null;
 };
 
+type PlaceBumpkin = {
+  id: number;
+  coordinates: Coordinates;
+};
+
 export type Bumpkins = {
   wallet: Record<number, Bumpkin>;
   farming: {
-    primary: number;
-    others: number[];
+    primary: PlaceBumpkin;
+    others: PlaceBumpkin[];
   };
 };
 

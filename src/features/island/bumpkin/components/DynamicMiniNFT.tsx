@@ -89,6 +89,7 @@ import {
   BumpkinWings,
   BumpkinCoat,
   BumpkinDress,
+  Equipped,
 } from "features/game/types/bumpkin";
 import { PIXEL_SCALE } from "features/game/lib/constants";
 import classNames from "classnames";
@@ -206,7 +207,10 @@ export interface DynamicMiniNFTProps {
   dress?: BumpkinDress;
 }
 
-export const DynamicMiniNFT: React.FC<DynamicMiniNFTProps> = ({
+export const DynamicMiniNFT: React.FC<
+  Partial<Equipped> & { bumpkinId: number }
+> = ({
+  bumpkinId,
   body,
   hair,
   shirt,
@@ -236,13 +240,16 @@ export const DynamicMiniNFT: React.FC<DynamicMiniNFTProps> = ({
         onClick={() => setShowModal(true)}
       />
       <Modal show={showModal} centered onHide={() => setShowModal(false)}>
-        <BumpkinPanel onClose={() => setShowModal(false)} />
+        <BumpkinPanel
+          bumpkinId={bumpkinId}
+          onClose={() => setShowModal(false)}
+        />
       </Modal>
     </>
   );
 };
 
-export const NPC: React.FC<DynamicMiniNFTProps & { onClick?: () => void }> = ({
+export const NPC: React.FC<Partial<Equipped> & { onClick?: () => void }> = ({
   body,
   hair,
   shirt,
@@ -348,7 +355,7 @@ export const NPC: React.FC<DynamicMiniNFTProps & { onClick?: () => void }> = ({
           ref={bodyRef}
           className="absolute w-full inset-0 pointer-events-none"
           style={bodyPartStyle}
-          image={PARTS[body] ?? beigeBody}
+          image={body ? PARTS[body] : beigeBody}
           widthFrame={FRAME_WIDTH}
           heightFrame={FRAME_HEIGHT}
           steps={STEPS}
@@ -421,7 +428,7 @@ export const NPC: React.FC<DynamicMiniNFTProps & { onClick?: () => void }> = ({
             ref={hairRef}
             className="absolute w-full inset-0 pointer-events-none"
             style={bodyPartStyle}
-            image={PARTS[hair] ?? sunSpots}
+            image={hair ? PARTS[hair] : sunSpots}
             widthFrame={FRAME_WIDTH}
             heightFrame={FRAME_HEIGHT}
             steps={STEPS}

@@ -25,14 +25,17 @@ const getInitialSelectedBumpkinId = (state: GameState) => {
   const {
     farming: { primary, others },
   } = state.bumpkins as Bumpkins;
-  const farmingBumpkins = [primary, ...others];
+  const farmingBumpkinsIds = [
+    primary.id,
+    ...others.map((bumpkin) => bumpkin.id),
+  ];
   const nonFarmingBumpkins = getNonFarmingBumpkins(state.bumpkins as Bumpkins);
 
-  if (getKeys(nonFarmingBumpkins).length === 0) return primary;
+  if (getKeys(nonFarmingBumpkins).length === 0) return primary.id;
 
   const placedTents = (state.buildings.Tent || []).length;
   const allowedBumpkins = placedTents + DEFAULT_BUMPKIN_ALLOWANCE;
-  const emptySlots = allowedBumpkins - farmingBumpkins.length;
+  const emptySlots = allowedBumpkins - farmingBumpkinsIds.length;
 
   if (emptySlots > 0) {
     const firstNonFarmingBumpkinId = getKeys(nonFarmingBumpkins)[0];
@@ -40,7 +43,7 @@ const getInitialSelectedBumpkinId = (state: GameState) => {
     return firstNonFarmingBumpkinId;
   }
 
-  return primary;
+  return primary.id;
 };
 
 export const TentModal: React.FC<Props> = ({ onClose }) => {
@@ -59,19 +62,22 @@ export const TentModal: React.FC<Props> = ({ onClose }) => {
 
   if (!state.bumpkins) return null;
 
-  const { bumpkins } = state;
-  const farmingBumpkinIds = [
-    bumpkins.farming.primary,
-    ...bumpkins.farming.others,
+  const {
+    wallet,
+    farming: { primary, others },
+  } = state.bumpkins as Bumpkins;
+  const farmingBumpkinsIds = [
+    primary.id,
+    ...others.map((bumpkin) => bumpkin.id),
   ];
-  const nonFarmingBumpkins = getNonFarmingBumpkins(bumpkins);
+  const nonFarmingBumpkins = getNonFarmingBumpkins(state.bumpkins);
   const placedTents = (state.buildings.Tent || []).length;
   const allowedBumpkins = placedTents + DEFAULT_BUMPKIN_ALLOWANCE;
-  const farmingBumpkinCount = farmingBumpkinIds.length;
-  const emptySlots = allowedBumpkins - farmingBumpkinIds.length;
+  const farmingBumpkinCount = farmingBumpkinsIds.length;
+  const emptySlots = allowedBumpkins - farmingBumpkinsIds.length;
 
   const Actions = () => {
-    const selectedIsFarming = farmingBumpkinIds.includes(selectedBumpkinId);
+    const selectedIsFarming = farmingBumpkinsIds.includes(selectedBumpkinId);
 
     if (!selectedIsFarming) return <Button>Place</Button>;
 
@@ -87,14 +93,12 @@ export const TentModal: React.FC<Props> = ({ onClose }) => {
     return <Button>Move</Button>;
   };
 
-  const { wallet } = bumpkins;
-
   const MainContent = () => (
     <div className="flex flex-col space-y-4">
       <div>
         <p className="text-sm mb-1">Farming</p>
         <div className="flex">
-          {farmingBumpkinIds.map((id) => (
+          {farmingBumpkinsIds.map((id) => (
             <BumpkinBox
               key={id}
               bumpkin={wallet[id]}

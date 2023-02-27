@@ -31,8 +31,6 @@ export const Tent: React.FC<BuildingProps> = ({ isBuilt, onRemove }) => {
     }
   };
 
-  console.log(hasMultipleBumpkinAccess);
-
   return (
     <>
       <BuildingImageWrapper onClick={handleClick} nonInteractible={!onRemove}>

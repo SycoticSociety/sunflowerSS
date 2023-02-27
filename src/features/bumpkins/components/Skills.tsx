@@ -17,16 +17,19 @@ import { PIXEL_SCALE } from "features/game/lib/constants";
 import { SUNNYSIDE } from "assets/sunnyside";
 
 interface Props {
+  bumpkinId: number;
   onBack: () => void;
   readonly: boolean;
 }
 
-export const Skills: React.FC<Props> = ({ onBack, readonly }) => {
+export const Skills: React.FC<Props> = ({ bumpkinId, onBack, readonly }) => {
   const { gameService } = useContext(Context);
   const [gameState] = useActor(gameService);
   const {
     context: { state },
   } = gameState;
+
+  const bumpkin = state.bumpkins?.wallet[bumpkinId];
 
   const [selectedSkillPath, setSelectedSkillPath] =
     useState<BumpkinSkillTree | null>(null);
@@ -53,7 +56,6 @@ export const Skills: React.FC<Props> = ({ onBack, readonly }) => {
     onBack();
   };
 
-  const { bumpkin } = state;
   const experience = bumpkin?.experience || 0;
 
   const availableSkillPoints = getAvailableBumpkinSkillPoints(bumpkin);

@@ -6,7 +6,7 @@ export const getNonFarmingBumpkins = (bumpkins: Bumpkins) => {
     wallet,
     farming: { primary, others },
   } = bumpkins;
-  const farmingBumpkins = [primary, ...others];
+  const farmingBumpkins = [primary.id, ...others.map(({ id }) => id)];
 
   return getKeys(wallet).reduce((acc, id) => {
     const isFarming = farmingBumpkins.includes(Number(id));

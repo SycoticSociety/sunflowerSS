@@ -19,11 +19,16 @@ import token from "assets/icons/token_2.png";
 import { ITEM_DETAILS } from "features/game/types/images";
 
 interface Props {
+  bumpkinId: number;
   onBack: () => void;
   readonly: boolean;
 }
 
-export const Achievements: React.FC<Props> = ({ onBack, readonly }) => {
+export const Achievements: React.FC<Props> = ({
+  bumpkinId,
+  onBack,
+  readonly,
+}) => {
   const { gameService } = useContext(Context);
   const [
     {
@@ -31,6 +36,8 @@ export const Achievements: React.FC<Props> = ({ onBack, readonly }) => {
     },
   ] = useActor(gameService);
   const { setToast } = useContext(ToastContext);
+
+  const bumpkin = state.bumpkins?.wallet[bumpkinId];
 
   const firstUnclaimedAchievementName = getUnclaimedAchievementNames(state);
 
@@ -41,12 +48,12 @@ export const Achievements: React.FC<Props> = ({ onBack, readonly }) => {
     defaultSelectedAchievement
   );
 
-  const claimedAchievements = getKeys(state.bumpkin?.achievements ?? {});
+  const claimedAchievements = getKeys(bumpkin?.achievements ?? {});
 
   const achievement = ACHIEVEMENTS()[selected];
   const progress = achievement.progress(state);
   const isComplete = progress >= achievement.requirement;
-  const bumpkinAchievements = state.bumpkin?.achievements || {};
+  const bumpkinAchievements = bumpkin?.achievements || {};
   const isAlreadyClaimed = !!bumpkinAchievements[selected];
 
   const onClaim = () => {

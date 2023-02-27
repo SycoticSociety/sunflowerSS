@@ -10,7 +10,6 @@ import { CONFIG } from "lib/config";
 import { PIXEL_SCALE } from "features/game/lib/constants";
 import { SkillBadges } from "./SkillBadges";
 import { getAvailableBumpkinSkillPoints } from "features/game/events/landExpansion/pickSkill";
-import { Bumpkin } from "features/game/types/game";
 import { SUNNYSIDE } from "assets/sunnyside";
 import { CloseButtonPanel } from "features/game/components/CloseablePanel";
 import seedSpecialist from "assets/skills/seed_specialist.png";
@@ -28,16 +27,19 @@ import {
 import { Feed } from "features/bumpkins/components/Feed";
 import { getEntries } from "features/game/types/craftables";
 import { CONSUMABLES } from "features/game/types/consumables";
+import { Bumpkin } from "features/game/types/game";
 
 export type TabView = "home" | "achievements" | "skills";
 
 interface Props {
+  bumpkinId: number;
   initialView?: TabView;
   onClose: () => void;
 }
 
 export const BumpkinPanel: React.FC<Props> = ({
   initialView = "home",
+  bumpkinId,
   onClose,
 }) => {
   const [view, setView] = useState<TabView>(initialView);
@@ -46,6 +48,8 @@ export const BumpkinPanel: React.FC<Props> = ({
   const { state } = gameState.context;
   const isVisiting = gameState.matches("visiting");
 
+  const bumpkin = state.bumpkins?.wallet[bumpkinId] as Bumpkin;
+
   const getVisitBumpkinUrl = () => {
     if (isVisiting) {
       const baseUrl =
@@ -53,7 +57,7 @@ export const BumpkinPanel: React.FC<Props> = ({
           ? `https://opensea.io/assets/matic`
           : `https://testnets.opensea.io/assets/mumbai`;
 
-      return `${baseUrl}/${CONFIG.BUMPKIN_CONTRACT}/${state.bumpkin?.id}`;
+      return `${baseUrl}/${CONFIG.BUMPKIN_CONTRACT}/${bumpkinId}`;
     }
 
     const baseUrl =
@@ -61,7 +65,7 @@ export const BumpkinPanel: React.FC<Props> = ({
         ? `https://bumpkins.io/#/bumpkins`
         : `https://testnet.bumpkins.io/#/bumpkins`;
 
-    return `${baseUrl}/${state.bumpkin?.id}`;
+    return `${baseUrl}/${bumpkinId}`;
   };
 
   useEffect(() => {
@@ -77,8 +81,7 @@ export const BumpkinPanel: React.FC<Props> = ({
     }
   }, [view]);
 
-  const hasAvailableSkillPoints =
-    getAvailableBumpkinSkillPoints(state.bumpkin) > 0;
+  const hasAvailableSkillPoints = getAvailableBumpkinSkillPoints(bumpkin) > 0;
   const hasAvailableAchievements =
     getUnclaimedAchievementNames(state).length > 0;
 
@@ -120,19 +123,16 @@ export const BumpkinPanel: React.FC<Props> = ({
         </div>
       </div>
       {title === "Skills" ? (
-        <SkillBadges
-          inventory={state.inventory}
-          bumpkin={state.bumpkin as Bumpkin}
-        />
+        <SkillBadges inventory={state.inventory} bumpkin={bumpkin} />
       ) : (
-        <AchievementBadges achievements={state.bumpkin?.achievements} />
+        <AchievementBadges achievements={bumpkin.achievements} />
       )}
     </OuterPanel>
   );
 
   return (
     <CloseButtonPanel<TabView>
-      bumpkinParts={state.bumpkin?.equipped}
+      bumpkinParts={bumpkin.equipped}
       onClose={onClose}
       tabs={[
         { icon: foodIcon, name: "Feed", view: "home" },
@@ -146,12 +146,20 @@ export const BumpkinPanel: React.FC<Props> = ({
       currentTab={view}
       setCurrentTab={(e) => setView(e)}
     >
-      {view === "home" && <Feed food={availableFood} />}
+      {view === "home" && <Feed bumpkinId={bumpkinId} food={availableFood} />}
       {view === "skills" && (
-        <Skills onBack={() => setView("home")} readonly={isVisiting} />
+        <Skills
+          bumpkinId={bumpkinId}
+          onBack={() => setView("home")}
+          readonly={isVisiting}
+        />
       )}
       {view === "achievements" && (
-        <Achievements onBack={() => setView("home")} readonly={isVisiting} />
+        <Achievements
+          bumpkinId={bumpkinId}
+          onBack={() => setView("home")}
+          readonly={isVisiting}
+        />
       )}
     </CloseButtonPanel>
   );

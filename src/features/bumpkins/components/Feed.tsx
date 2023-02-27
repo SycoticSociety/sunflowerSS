@@ -20,10 +20,11 @@ import { PIXEL_SCALE } from "features/game/lib/constants";
 import { LevelInfo } from "./LevelInfo";
 
 interface Props {
+  bumpkinId: number;
   food: Consumable[];
 }
 
-export const Feed: React.FC<Props> = ({ food }) => {
+export const Feed: React.FC<Props> = ({ bumpkinId, food }) => {
   const [selected, setSelected] = useState<Consumable | undefined>(food[0]);
   const { setToast } = useContext(ToastContext);
   const { gameService, shortcutItem } = useContext(Context);
@@ -35,6 +36,8 @@ export const Feed: React.FC<Props> = ({ food }) => {
   ] = useActor(gameService);
   const inventory = state.inventory;
 
+  const bumpkin = state.bumpkins?.wallet[bumpkinId];
+
   useEffect(() => {
     if (food.length) {
       setSelected(food[0]);
@@ -44,14 +47,13 @@ export const Feed: React.FC<Props> = ({ food }) => {
   }, [food.length]);
 
   const feed = (food: Consumable) => {
-    console.log("feedcalled");
     gameService.send("bumpkin.feed", { food: food.name });
 
     setToast({
       icon: levelIcon,
       content: `+${getFoodExpBoost(
         food,
-        state.bumpkin as Bumpkin,
+        bumpkin as Bumpkin,
         state.collectibles
       )}`,
     });
@@ -115,7 +117,7 @@ export const Feed: React.FC<Props> = ({ food }) => {
         <div className="flex flex-col">
           <div className="px-1">
             <LevelInfo
-              bumpkin={state.bumpkin as Bumpkin}
+              bumpkin={bumpkin as Bumpkin}
               className="text-sm sm:text-base"
             />
             <p className="my-2">Food</p>

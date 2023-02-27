@@ -5,7 +5,10 @@ import { Airdrop } from "features/game/expansion/components/Airdrop";
 import { LetterBox } from "features/farming/mail/LetterBox";
 import { DynamicMiniNFT, DynamicMiniNFTProps } from "./DynamicMiniNFT";
 
-export const CharacterPlayground: React.FC<DynamicMiniNFTProps> = ({
+export const CharacterPlayground: React.FC<
+  DynamicMiniNFTProps & { bumpkinId: number }
+> = ({
+  bumpkinId,
   body,
   hair,
   shirt,
@@ -28,6 +31,7 @@ export const CharacterPlayground: React.FC<DynamicMiniNFTProps> = ({
         }}
       />
       <DynamicMiniNFT
+        bumpkinId={bumpkinId}
         body={body}
         hair={hair}
         shirt={shirt}

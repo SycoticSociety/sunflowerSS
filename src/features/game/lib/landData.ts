@@ -1,4 +1,5 @@
 import Decimal from "decimal.js-light";
+import { DEFAULT_BUMPKIN_POSITION } from "features/island/bumpkin/types/character";
 import { Bumpkin, GameState, Inventory, LandExpansion } from "../types/game";
 
 const INITIAL_STOCK: Inventory = {
@@ -439,11 +440,14 @@ export const OFFLINE_FARM: GameState = {
         tokenUri:
           "https://api.sunflower-land.com/bumpkins/metadata/2_v1_83_4_97_88_39_89_58_84_30_31_16_0_0_73",
         id: 3,
-        experience: 487630.86500000063,
+        experience: 222222,
       },
     },
     farming: {
-      primary: 1,
+      primary: {
+        id: 1,
+        coordinates: DEFAULT_BUMPKIN_POSITION,
+      },
       others: [],
     },
   },

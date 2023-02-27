@@ -22,6 +22,7 @@ import { Chicken } from "features/island/chickens/Chicken";
 
 import { Section } from "lib/utils/hooks/useScrollIntoView";
 import { SUNNYSIDE } from "assets/sunnyside";
+import { BUMPKIN_DIMENSIONS } from "features/island/bumpkin/types/character";
 
 const PLACEABLES: Record<PlaceableName, React.FC<any>> = {
   Chicken: () => <Chicken id="123" />, // Temp id for placing, when placed action will assign a random UUID and the temp one will be overridden.
@@ -84,6 +85,7 @@ export const Placeable: React.FC = () => {
     ...BUILDINGS_DIMENSIONS,
     ...COLLECTIBLES_DIMENSIONS,
     ...ANIMAL_DIMENSIONS,
+    ...BUMPKIN_DIMENSIONS,
   }[placeable];
 
   const detect = ({ x, y }: Coordinates) => {
