@@ -4,9 +4,12 @@ import { BuildingName } from "features/game/types/buildings";
 import { CollectibleName } from "features/game/types/craftables";
 import { assign, createMachine, Interpreter, sendParent } from "xstate";
 import { Coordinates } from "../components/MapPlacement";
+import { PlaceBumpkinAction } from "features/game/events/landExpansion/placeBumpkin";
+import { Bumpkin } from "features/game/types/game";
 
 export interface Context {
-  placeable: BuildingName | CollectibleName;
+  bumpkin?: Bumpkin;
+  placeable: BuildingName | CollectibleName | "Bumpkin";
   action: GameEventName<PlacementEvent>;
   coordinates: Coordinates;
   collisionDetected: boolean;
@@ -22,6 +25,10 @@ type PlaceEvent = {
   type: "PLACE";
 };
 
+type PlaceBumpkinEvent = {
+  type: "PLACE_BUMPKIN";
+};
+
 type ConstructEvent = {
   type: "CONSTRUCT";
   actionName: PlacementEvent;
@@ -32,6 +39,7 @@ export type BlockchainEvent =
   | { type: "DROP" }
   | ConstructEvent
   | PlaceEvent
+  | PlaceBumpkinEvent
   | UpdateEvent
   | { type: "CANCEL" };
 
@@ -81,6 +89,18 @@ export const editingMachine = createMachine<
                 coordinates: { x, y },
                 id: uuidv4(),
               } as PlacementEvent)
+          ),
+        },
+        PLACE_BUMPKIN: {
+          target: "placed",
+          actions: sendParent(
+            ({ action, placeable, bumpkin, coordinates: { x, y } }) =>
+              ({
+                type: action,
+                name: placeable,
+                coordinates: { x, y },
+                id: bumpkin?.id,
+              } as PlaceBumpkinAction)
           ),
         },
       },

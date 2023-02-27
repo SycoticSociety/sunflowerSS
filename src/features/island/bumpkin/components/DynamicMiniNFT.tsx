@@ -276,7 +276,7 @@ export const NPC: React.FC<Partial<Equipped> & { onClick?: () => void }> = ({
 
   const bodyPartStyle = {
     width: `${PIXEL_SCALE * 20}px`,
-    top: `${PIXEL_SCALE * 5}px`,
+    top: `-${PIXEL_SCALE * 4}px`,
     left: `${PIXEL_SCALE * -2}px`,
     imageRendering: "pixelated" as const,
   };
@@ -319,6 +319,7 @@ export const NPC: React.FC<Partial<Equipped> & { onClick?: () => void }> = ({
   return (
     <>
       <div
+        id="npc"
         className={classNames(`absolute `, {
           "cursor-pointer hover:img-highlight": !!onClick,
         })}
@@ -332,7 +333,7 @@ export const NPC: React.FC<Partial<Equipped> & { onClick?: () => void }> = ({
           src={shadow}
           style={{
             width: `${PIXEL_SCALE * 15}px`,
-            top: `${PIXEL_SCALE * 20}px`,
+            top: `${PIXEL_SCALE * 11}px`,
             left: `${PIXEL_SCALE * 1}px`,
           }}
           className="absolute pointer-events-none"

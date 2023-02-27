@@ -188,7 +188,14 @@ export const BumpkinProfile: React.FC = () => {
     context: { state },
   } = gameState;
 
-  const experience = state.bumpkin?.experience ?? 0;
+  const {
+    wallet,
+    farming: { primary },
+    // bumpkins will not be optional in the future
+  } = state.bumpkins!;
+  const bumpkin = wallet[primary.id];
+
+  const experience = bumpkin.experience ?? 0;
   const level = getBumpkinLevel(experience);
   const showSkillPointAlert = hasUnacknowledgedSkillPoints(state);
   const showAchievementAlert = hasUnacknowledgedAchievements(state);
@@ -234,7 +241,11 @@ export const BumpkinProfile: React.FC = () => {
     <>
       {/* Bumpkin modal */}
       <Modal show={showModal} centered onHide={handleHideModal}>
-        <BumpkinPanel initialView={initialView} onClose={handleHideModal} />
+        <BumpkinPanel
+          bumpkinId={primary.id}
+          initialView={initialView}
+          onClose={handleHideModal}
+        />
       </Modal>
 
       {/* Bumpkin profile */}

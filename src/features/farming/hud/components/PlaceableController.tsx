@@ -25,6 +25,11 @@ export const PlaceableController: React.FC = () => {
       return;
     }
 
+    if (child.state.context.bumpkin) {
+      send("PLACE_BUMPKIN");
+      return;
+    }
+
     send("PLACE");
   };
 

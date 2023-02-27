@@ -122,6 +122,7 @@ import {
   feedValentineFood,
   feedValentineFoodAction,
 } from "./landExpansion/valentineFoodFeed";
+import { placeBumpkin, PlaceBumpkinAction } from "./landExpansion/placeBumpkin";
 
 export type PlayingEvent =
   | TradeAction
@@ -168,7 +169,8 @@ export type PlacementEvent =
   | PlaceBuildingAction
   | PlaceCollectibleAction
   | BuyChickenAction
-  | PlaceChickenAction;
+  | PlaceChickenAction
+  | PlaceBumpkinAction;
 
 export type GameEvent = PlayingEvent | PlacementEvent;
 export type GameEventName<T> = Extract<T, { type: string }>["type"];
@@ -230,6 +232,7 @@ export const PLACEMENT_EVENTS: Handlers<PlacementEvent> = {
   "collectible.placed": placeCollectible,
   "chicken.bought": buyChicken,
   "chicken.placed": placeChicken,
+  "bumpkin.placed": placeBumpkin,
 };
 
 export const EVENTS = { ...PLAYING_EVENTS, ...PLACEMENT_EVENTS };

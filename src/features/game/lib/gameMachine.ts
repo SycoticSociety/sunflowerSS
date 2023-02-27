@@ -96,7 +96,8 @@ type SyncEvent = {
 };
 
 type EditEvent = {
-  placeable: BuildingName | CollectibleName;
+  bumpkinId?: number;
+  placeable: BuildingName | CollectibleName | "Bumpkin";
   action: GameEventName<PlacementEvent>;
   type: "EDIT";
 };
@@ -929,6 +930,11 @@ export function startGame(authContext: Options) {
             autoForward: true,
             src: editingMachine,
             data: {
+              bumpkin: (context: Context, event: EditEvent) => {
+                if (!event.bumpkinId) return;
+
+                return context.state.bumpkins?.wallet[event.bumpkinId];
+              },
               placeable: (_: Context, event: EditEvent) => event.placeable,
               action: (_: Context, event: EditEvent) => event.action,
               coordinates: { x: 0, y: 0 },

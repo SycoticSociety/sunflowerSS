@@ -23,6 +23,7 @@ import { Chicken } from "features/island/chickens/Chicken";
 import { Section } from "lib/utils/hooks/useScrollIntoView";
 import { SUNNYSIDE } from "assets/sunnyside";
 import { BUMPKIN_DIMENSIONS } from "features/island/bumpkin/types/character";
+import { DynamicMiniNFT } from "features/island/bumpkin/components/DynamicMiniNFT";
 
 const PLACEABLES: Record<PlaceableName, React.FC<any>> = {
   Chicken: () => <Chicken id="123" />, // Temp id for placing, when placed action will assign a random UUID and the temp one will be overridden.
@@ -80,7 +81,7 @@ export const Placeable: React.FC = () => {
   const child = gameService.state.children.editing as MachineInterpreter;
 
   const [machine, send] = useActor(child);
-  const { placeable } = machine.context;
+  const { placeable, bumpkin } = machine.context;
   const { width, height } = {
     ...BUILDINGS_DIMENSIONS,
     ...COLLECTIBLES_DIMENSIONS,
@@ -109,6 +110,16 @@ export const Placeable: React.FC = () => {
       y: Math.round(-DEFAULT_POSITION_Y / GRID_WIDTH_PX),
     });
   }, []);
+
+  const Placeable = () => {
+    if (placeable === "Bumpkin") {
+      if (!bumpkin) return null;
+
+      return <DynamicMiniNFT {...bumpkin?.equipped} bumpkinId={bumpkin.id} />;
+    }
+
+    return PLACEABLES[placeable]({});
+  };
 
   return (
     <>
@@ -187,7 +198,7 @@ export const Placeable: React.FC = () => {
                 height: `${height * GRID_WIDTH_PX}px`,
               }}
             >
-              {PLACEABLES[placeable]({})}
+              {Placeable()}
             </div>
           </div>
         </Draggable>

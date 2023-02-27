@@ -54,8 +54,6 @@ export const TentModal: React.FC<Props> = ({ onClose }) => {
     },
   ] = useActor(gameService);
 
-  console.log(getInitialSelectedBumpkinId(state));
-
   const [selectedBumpkinId, setSelectedBumpkinId] = useState<number>(
     getInitialSelectedBumpkinId(state)
   );
@@ -76,10 +74,20 @@ export const TentModal: React.FC<Props> = ({ onClose }) => {
   const farmingBumpkinCount = farmingBumpkinsIds.length;
   const emptySlots = allowedBumpkins - farmingBumpkinsIds.length;
 
+  const onPlace = () => {
+    gameService.send("EDIT", {
+      bumpkinId: selectedBumpkinId,
+      placeable: "Bumpkin",
+      action: "bumpkin.placed",
+    });
+
+    onClose();
+  };
+
   const Actions = () => {
     const selectedIsFarming = farmingBumpkinsIds.includes(selectedBumpkinId);
 
-    if (!selectedIsFarming) return <Button>Place</Button>;
+    if (!selectedIsFarming) return <Button onClick={onPlace}>Place</Button>;
 
     if (selectedIsFarming && farmingBumpkinCount > 1) {
       return (
