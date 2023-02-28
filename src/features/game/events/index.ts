@@ -124,6 +124,10 @@ import {
 } from "./landExpansion/valentineFoodFeed";
 import { placeBumpkin, PlaceBumpkinAction } from "./landExpansion/placeBumpkin";
 import { moveBumpkin, MoveBumpkinAction } from "./landExpansion/moveBumpkin";
+import {
+  removeBumpkin,
+  RemoveBumpkinAction,
+} from "./landExpansion/removeBumpkin";
 
 export type PlayingEvent =
   | TradeAction
@@ -163,7 +167,8 @@ export type PlayingEvent =
   | CraftCollectibleAction
   | SellTreasureAction
   | RestockAction
-  | feedValentineFoodAction;
+  | feedValentineFoodAction
+  | RemoveBumpkinAction;
 
 export type PlacementEvent =
   | ConstructBuildingAction
@@ -226,6 +231,7 @@ export const PLAYING_EVENTS: Handlers<PlayingEvent> = {
   "treasure.sold": sellTreasure,
   "shops.restocked": restock,
   "valentineFood.feed": feedValentineFood,
+  "bumpkin.removed": removeBumpkin,
 };
 
 export const PLACEMENT_EVENTS: Handlers<PlacementEvent> = {

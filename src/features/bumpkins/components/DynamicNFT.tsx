@@ -6,6 +6,7 @@ import { Equipped as BumpkinParts } from "features/game/types/bumpkin";
 import { buildImage } from "../actions/buildImage";
 import classNames from "classnames";
 import cloneDeep from "lodash.clonedeep";
+import isEqual from "lodash.isequal";
 
 interface Props {
   bumpkinParts: Partial<BumpkinParts>;
@@ -20,27 +21,27 @@ export const DynamicNFT: React.FC<Props> = ({
 }) => {
   const [imageSrc, setImageSrc] = useState<string>();
   const [transitioned, setTransitioned] = useState<boolean>();
-
-  const parts = cloneDeep(bumpkinParts);
+  const [parts, setParts] = useState<Partial<BumpkinParts>>(
+    cloneDeep(bumpkinParts)
+  );
 
   useEffect(() => {
-    let isSubscribed = true;
+    if (!isEqual(parts, bumpkinParts)) {
+      setParts(cloneDeep(bumpkinParts));
+    }
+  }, [bumpkinParts]);
+
+  useEffect(() => {
     const load = async () => {
       const image = await buildImage({
         parts,
       });
 
-      if (isSubscribed) {
-        setImageSrc(image);
-      }
+      setImageSrc(image);
     };
 
     load();
-
-    return () => {
-      isSubscribed = false;
-    };
-  }, []);
+  }, [parts]);
 
   if (!parts) {
     return null;

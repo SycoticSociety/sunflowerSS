@@ -456,6 +456,8 @@ export const OFFLINE_FARM: GameState = {
       primary: {
         id: 1,
         coordinates: DEFAULT_BUMPKIN_POSITION,
+        readyAt: 0,
+        createdAt: 0,
       },
       others: [],
     },

@@ -23,6 +23,7 @@
   "dependencies": {
     "0xsequence": "^0.43.2",
     "@alch/alchemy-web3": "^1.4.7",
+    "@types/lodash.isequal": "^4.5.6",
     "@types/uuid": "^9.0.0",
     "@walletconnect/web3-provider": "^1.8.0",
     "@xstate/inspect": "^0.6.2",
@@ -41,6 +42,7 @@
     "lodash.clonedeep": "^4.5.0",
     "lodash.debounce": "^4.0.8",
     "lodash.isempty": "^4.4.0",
+    "lodash.isequal": "^4.5.0",
     "lodash.omit": "^4.5.0",
     "lodash.shuffle": "^4.2.0",
     "process": "^0.11.10",
@@ -63,8 +65,8 @@
   "devDependencies": {
     "@rollup/plugin-inject": "^5.0.2",
     "@testing-library/react-hooks": "^7.0.2",
-    "@types/howler": "^2.2.6",
     "@types/bad-words": "^3.0.1",
+    "@types/howler": "^2.2.6",
     "@types/jest": "^27.4.0",
     "@types/lodash.clonedeep": "^4.5.7",
     "@types/lodash.debounce": "^4.0.7",

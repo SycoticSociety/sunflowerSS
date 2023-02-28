@@ -45,6 +45,7 @@ import { BumpkinTutorial } from "./BumpkinTutorial";
 import { Hud } from "features/island/hud/Hud";
 import { DynamicMiniNFT } from "features/island/bumpkin/components/DynamicMiniNFT";
 import { EditEvent } from "../lib/gameMachine";
+import isEqual from "lodash.isequal";
 
 type ExpansionProps = Pick<
   LandExpansion,
@@ -297,7 +298,13 @@ const getIslandElements = ({
           height={BUMPKIN_DIMENSIONS.Bumpkin.height}
           isEditing={isEditing}
         >
-          <DynamicMiniNFT bumpkinId={bumpkin.id} {...bumpkin.equipped} />
+          <DynamicMiniNFT
+            isEditing={isEditing}
+            createdAt={bumpkin.createdAt}
+            readyAt={bumpkin.readyAt}
+            bumpkinId={bumpkin.id}
+            {...bumpkin.equipped}
+          />
         </MapPlacement>
       ))
     );
@@ -410,6 +417,8 @@ export const Land: React.FC = () => {
   const { expansions, buildings, collectibles, chickens, bumpkin } = state;
   const [isEditing, setIsEditing] = useState(false);
 
+  // Placed bumpkins are stored in local state so that we can hide the placed
+  // bumpkin when it is being moved
   const [placedBumpkins, setPlacedBumpkins] = useState<
     (Bumpkin & PlacedBumpkin)[]
   >(getPlacedBumpkins(state.bumpkins));
@@ -428,24 +437,35 @@ export const Land: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (gameState.matches("editing")) {
-      setIsEditing(true);
-
-      const event = gameState.event as EditEvent;
-
-      // If moving a bumpkin, remove it from placed bumpkins so it doesn't show up twice on the map
-      if (event.action === "bumpkin.moved") {
-        const filteredBumpkins = placedBumpkins.filter(
-          (bumpkin) => bumpkin.id !== event.bumpkinId
-        );
-
-        setPlacedBumpkins(filteredBumpkins);
-      }
-    } else {
-      setIsEditing(false);
-      setPlacedBumpkins(getPlacedBumpkins(state.bumpkins));
-    }
+    setIsEditing(gameState.value === "editing");
   }, [gameState.value]);
+
+  useEffect(() => {
+    // This useEffect is used to control farming bumpkin state changes since they're
+    // stored in local state
+    const {
+      context: { state },
+      event,
+    } = gameState;
+
+    // If the bumpkin is being moved then remove it from the map
+    if ("action" in event && event.action === "bumpkin.moved") {
+      const filteredBumpkins = placedBumpkins.filter(
+        (bumpkin) => bumpkin.id !== (event as EditEvent).bumpkinId
+      );
+
+      setPlacedBumpkins(filteredBumpkins);
+      return;
+    }
+
+    // Check to see if the farming bumpkins have changed, if so then update the local state
+    const newPlacedBumpkins = getPlacedBumpkins(state.bumpkins);
+
+    if (!isEqual(newPlacedBumpkins, placedBumpkins)) {
+      setPlacedBumpkins(newPlacedBumpkins);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gameState]);
 
   const boatCoordinates = {
     x: expandedCount >= 7 ? -9 : -2,

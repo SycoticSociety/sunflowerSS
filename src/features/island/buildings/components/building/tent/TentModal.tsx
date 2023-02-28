@@ -12,6 +12,7 @@ import { BumpkinBox, EmptyBumpkinBox } from "./BumpkinBox";
 import { getBumpkinUrl } from "./lib/getBumpkinImageUrl";
 import { Button } from "components/ui/Button";
 import { getNonFarmingBumpkins } from "./lib/getNonFarmingBumpkins";
+import { useIsMobile } from "lib/utils/hooks/useIsMobile";
 
 interface Props {
   onClose: () => void;
@@ -53,10 +54,11 @@ export const TentModal: React.FC<Props> = ({ onClose }) => {
       context: { state },
     },
   ] = useActor(gameService);
-
+  const [isMobile] = useIsMobile();
   const [selectedBumpkinId, setSelectedBumpkinId] = useState<number>(
     getInitialSelectedBumpkinId(state)
   );
+  const [showRemoveConfirmation, setShowRemoveConfirmation] = useState(false);
 
   if (!state.bumpkins) return null;
 
@@ -94,7 +96,29 @@ export const TentModal: React.FC<Props> = ({ onClose }) => {
     onClose();
   };
 
+  const onRemove = () => {
+    gameService.send("bumpkin.removed", { id: selectedBumpkinId });
+
+    setShowRemoveConfirmation(false);
+  };
+
   const Actions = () => {
+    if (showRemoveConfirmation)
+      return (
+        <div
+          className="flex space-x-reverse space-x-1 sm:space-x-0 sm:space-y-1"
+          // Need to use styles to counteract tailwind and bootstrap collision
+          style={{
+            flexDirection: isMobile ? "row-reverse" : "column",
+          }}
+        >
+          <Button onClick={onRemove}>Remove</Button>
+          <Button onClick={() => setShowRemoveConfirmation(false)}>
+            Cancel
+          </Button>
+        </div>
+      );
+
     const selectedIsFarming = farmingBumpkinsIds.includes(selectedBumpkinId);
 
     if (!selectedIsFarming) return <Button onClick={onPlace}>Place</Button>;
@@ -103,7 +127,9 @@ export const TentModal: React.FC<Props> = ({ onClose }) => {
       return (
         <div className="flex space-x-1 sm:flex-col sm:space-x-0 sm:space-y-1">
           <Button onClick={onMove}>Move</Button>
-          <Button>Remove</Button>
+          <Button onClick={() => setShowRemoveConfirmation(true)}>
+            Remove
+          </Button>
         </div>
       );
     }
@@ -147,8 +173,8 @@ export const TentModal: React.FC<Props> = ({ onClose }) => {
   );
 
   const PanelContent = () => (
-    <div className="flex flex-col sm:flex-col space-y-2">
-      <div className="flex space-x-2 sm:flex-col">
+    <div className="flex flex-col space-y-2">
+      <div className="flex space-x-2 sm:flex-col sm:space-x-0">
         <div className="rounded overflow-hidden w-32 sm:w-full relative">
           <img
             src={getBumpkinUrl(wallet[selectedBumpkinId])}
@@ -157,13 +183,21 @@ export const TentModal: React.FC<Props> = ({ onClose }) => {
           />
         </div>
         <div className="flex flex-col space-y-2">
-          <p className="text-xs sm:text-center sm:mt-1">{`Bumpkin #${selectedBumpkinId}`}</p>
-          <LevelInfo
-            bumpkin={wallet[selectedBumpkinId]}
-            className="sm:text-sm sm:items-center"
-          />
+          {!showRemoveConfirmation && (
+            <>
+              <p className="text-xs sm:text-center sm:mt-1">{`Bumpkin #${selectedBumpkinId}`}</p>
+              <LevelInfo
+                bumpkin={wallet[selectedBumpkinId]}
+                className="sm:text-sm sm:items-center"
+              />
+            </>
+          )}
+          {showRemoveConfirmation && (
+            <div className="h-full flex items-center p-1 pb-0 text-xs text-center">{`Are you sure you want to remove Bumpkin #${selectedBumpkinId}?`}</div>
+          )}
         </div>
       </div>
+
       {Actions()}
     </div>
   );

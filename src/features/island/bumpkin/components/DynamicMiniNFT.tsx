@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 
 // Bodies
 import beigeBody from "assets/npc-layers/beige_body.png";
@@ -95,6 +95,10 @@ import { PIXEL_SCALE } from "features/game/lib/constants";
 import classNames from "classnames";
 import { BumpkinPanel } from "features/bumpkins/components/BumpkinPanel";
 import Modal from "react-bootstrap/esm/Modal";
+import useUiRefresher from "lib/utils/hooks/useUiRefresher";
+import { Context } from "features/game/GameProvider";
+import { Bar } from "components/ui/ProgressBar";
+import { TimeLeftPanel } from "components/ui/TimeLeftPanel";
 
 type VisiblePart =
   | BumpkinBody
@@ -194,23 +198,18 @@ const PARTS: Partial<Record<VisiblePart, string>> = {
   "Tiger Onesie": tigerOnesie,
 };
 
-export interface DynamicMiniNFTProps {
-  body: BumpkinBody;
-  hair: BumpkinHair;
-  shirt?: BumpkinShirt;
-  pants?: BumpkinPant;
-  hat?: BumpkinHat;
-  suit?: BumpkinSuit;
-  onesie?: BumpkinOnesie;
-  wings?: BumpkinWings;
-  coat?: BumpkinCoat;
-  dress?: BumpkinDress;
-}
+export type DynamicMiniNFTProps = Partial<Equipped> & {
+  bumpkinId: number;
+  readyAt: number;
+  createdAt: number;
+  isEditing?: boolean;
+};
 
-export const DynamicMiniNFT: React.FC<
-  Partial<Equipped> & { bumpkinId: number }
-> = ({
+export const DynamicMiniNFT: React.FC<DynamicMiniNFTProps> = ({
   bumpkinId,
+  readyAt,
+  createdAt,
+  isEditing,
   body,
   hair,
   shirt,
@@ -223,6 +222,72 @@ export const DynamicMiniNFT: React.FC<
   dress,
 }) => {
   const [showModal, setShowModal] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
+  const { showTimers } = useContext(Context);
+
+  const inCooldown = readyAt > Date.now();
+
+  useUiRefresher({ active: inCooldown && !isEditing });
+
+  if (inCooldown) {
+    const totalSeconds = (readyAt - createdAt) / 1000;
+    const secondsLeft = Math.floor((readyAt - Date.now()) / 1000);
+
+    return (
+      <>
+        <div
+          className="w-full h-full cursor-pointer relative"
+          onMouseEnter={() => setShowTooltip(true)}
+          onMouseLeave={() => setShowTooltip(false)}
+        >
+          <div
+            className={classNames("w-full h-full pointer-events-none", {
+              "opacity-50": inCooldown,
+            })}
+          >
+            <NPC
+              body={body}
+              hair={hair}
+              shirt={shirt}
+              pants={pants}
+              hat={hat}
+              suit={suit}
+              onesie={onesie}
+              wings={wings}
+              coat={coat}
+              dress={dress}
+              onClick={() => setShowModal(true)}
+            />
+          </div>
+          {showTimers && (
+            <div
+              className="absolute bottom-0 top-9 left-1/2"
+              style={{
+                marginLeft: `${PIXEL_SCALE * -8}px`,
+              }}
+            >
+              <Bar
+                percentage={(1 - secondsLeft / totalSeconds) * 100}
+                type="progress"
+              />
+            </div>
+          )}
+        </div>
+        <div
+          className="flex justify-center absolute w-full pointer-events-none"
+          style={{
+            top: `${PIXEL_SCALE * -20}px`,
+          }}
+        >
+          <TimeLeftPanel
+            text="Ready in:"
+            timeLeft={secondsLeft}
+            showTimeLeft={showTooltip}
+          />
+        </div>
+      </>
+    );
+  }
 
   return (
     <>
