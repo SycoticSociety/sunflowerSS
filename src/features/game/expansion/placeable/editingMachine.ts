@@ -6,6 +6,7 @@ import { assign, createMachine, Interpreter, sendParent } from "xstate";
 import { Coordinates } from "../components/MapPlacement";
 import { PlaceBumpkinAction } from "features/game/events/landExpansion/placeBumpkin";
 import { Bumpkin } from "features/game/types/game";
+import { MoveBumpkinAction } from "features/game/events/landExpansion/moveBumpkin";
 
 export interface Context {
   bumpkin?: Bumpkin;
@@ -29,6 +30,10 @@ type PlaceBumpkinEvent = {
   type: "PLACE_BUMPKIN";
 };
 
+type MoveBumpkinEvent = {
+  type: "MOVE_BUMPKIN";
+};
+
 type ConstructEvent = {
   type: "CONSTRUCT";
   actionName: PlacementEvent;
@@ -40,6 +45,7 @@ export type BlockchainEvent =
   | ConstructEvent
   | PlaceEvent
   | PlaceBumpkinEvent
+  | MoveBumpkinEvent
   | UpdateEvent
   | { type: "CANCEL" };
 
@@ -101,6 +107,18 @@ export const editingMachine = createMachine<
                 coordinates: { x, y },
                 id: bumpkin?.id,
               } as PlaceBumpkinAction)
+          ),
+        },
+        MOVE_BUMPKIN: {
+          target: "placed",
+          actions: sendParent(
+            ({ action, placeable, bumpkin, coordinates: { x, y } }) =>
+              ({
+                type: action,
+                name: placeable,
+                coordinates: { x, y },
+                id: bumpkin?.id,
+              } as MoveBumpkinAction)
           ),
         },
       },

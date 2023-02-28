@@ -13,13 +13,19 @@ import {
 import { Tree } from "./components/resources/Tree";
 import { LandBase } from "./components/LandBase";
 import { UpcomingExpansion } from "./components/UpcomingExpansion";
-import { Bumpkins, LandExpansion, PlacedItem } from "../types/game";
+import {
+  Bumpkin,
+  LandExpansion,
+  PlacedItem,
+  PlacedBumpkin,
+  Bumpkins,
+} from "../types/game";
 import { EXPANSION_ORIGINS } from "./lib/constants";
 import { Stone } from "./components/resources/Stone";
 import { Placeable } from "./placeable/Placeable";
 import { BuildingName, BUILDINGS_DIMENSIONS } from "../types/buildings";
 import { Building } from "features/island/buildings/components/building/Building";
-import { CharacterPlayground } from "features/island/bumpkin/components/CharacterPlayground";
+import { HomeBase } from "features/island/bumpkin/components/HomeBase";
 import { Gold } from "./components/resources/Gold";
 import { Iron } from "./components/resources/Iron";
 import { Collectible } from "features/island/collectibles/Collectible";
@@ -38,6 +44,7 @@ import { IslandTravel } from "features/game/expansion/components/travel/IslandTr
 import { BumpkinTutorial } from "./BumpkinTutorial";
 import { Hud } from "features/island/hud/Hud";
 import { DynamicMiniNFT } from "features/island/bumpkin/components/DynamicMiniNFT";
+import { EditEvent } from "../lib/gameMachine";
 
 type ExpansionProps = Pick<
   LandExpansion,
@@ -226,7 +233,7 @@ const getIslandElements = ({
   buildings: Partial<Record<BuildingName, PlacedItem[]>>;
   collectibles: Partial<Record<CollectibleName, PlacedItem[]>>;
   chickens: Partial<Record<string, Chicken>>;
-  bumpkins: Bumpkins;
+  bumpkins: (Bumpkin & PlacedBumpkin)[];
   isEditing?: boolean;
 }) => {
   const mapPlacements: Array<JSX.Element> = [];
@@ -265,57 +272,34 @@ const getIslandElements = ({
       )
   );
 
-  const {
-    wallet,
-    farming: { primary, others },
-  } = bumpkins;
+  // Letterbox
+  mapPlacements.push(
+    <MapPlacement
+      key="bumpkin-parts"
+      x={DEFAULT_BUMPKIN_POSITION.x}
+      y={DEFAULT_BUMPKIN_POSITION.y}
+      width={2}
+      height={2}
+      isEditing={isEditing}
+    >
+      <HomeBase />
+    </MapPlacement>
+  );
 
-  const primaryBumpkin = wallet[primary.id];
-
-  if (primaryBumpkin.equipped) {
+  if (bumpkins.length > 0) {
     mapPlacements.push(
-      <MapPlacement
-        key="bumpkin-parts"
-        x={DEFAULT_BUMPKIN_POSITION.x}
-        y={DEFAULT_BUMPKIN_POSITION.y}
-        width={2}
-        height={2}
-        isEditing={isEditing}
-      >
-        <CharacterPlayground
-          bumpkinId={primary.id}
-          body={primaryBumpkin.equipped.body}
-          hair={primaryBumpkin.equipped.hair}
-          shirt={primaryBumpkin.equipped.shirt}
-          pants={primaryBumpkin.equipped.pants}
-          suit={primaryBumpkin.equipped.suit}
-          hat={primaryBumpkin.equipped.hat}
-          onesie={primaryBumpkin.equipped.onesie}
-          wings={primaryBumpkin.equipped.wings}
-          dress={primaryBumpkin.equipped.dress}
-        />
-      </MapPlacement>
-    );
-  }
-
-  if (others.length > 0) {
-    mapPlacements.push(
-      ...others.map((placedBumpkin) => {
-        const bumpkin = { ...placedBumpkin, ...wallet[placedBumpkin.id] };
-
-        return (
-          <MapPlacement
-            key={`bumpkin-${bumpkin.id}`}
-            x={bumpkin.coordinates.x}
-            y={bumpkin.coordinates.y}
-            width={BUMPKIN_DIMENSIONS.Bumpkin.width}
-            height={BUMPKIN_DIMENSIONS.Bumpkin.height}
-            isEditing={isEditing}
-          >
-            <DynamicMiniNFT bumpkinId={bumpkin.id} {...bumpkin.equipped} />
-          </MapPlacement>
-        );
-      })
+      ...bumpkins.map((bumpkin) => (
+        <MapPlacement
+          key={`bumpkin-${bumpkin.id}`}
+          x={bumpkin.coordinates.x}
+          y={bumpkin.coordinates.y}
+          width={BUMPKIN_DIMENSIONS.Bumpkin.width}
+          height={BUMPKIN_DIMENSIONS.Bumpkin.height}
+          isEditing={isEditing}
+        >
+          <DynamicMiniNFT bumpkinId={bumpkin.id} {...bumpkin.equipped} />
+        </MapPlacement>
+      ))
     );
   }
 
@@ -402,6 +386,22 @@ const getIslandElements = ({
   return mapPlacements;
 };
 
+const getPlacedBumpkins = (bumpkins?: Bumpkins) => {
+  if (!bumpkins) return [];
+
+  const {
+    wallet,
+    farming: { primary, others },
+  } = bumpkins;
+
+  const placedBumpkins: Array<Bumpkin & PlacedBumpkin> = [
+    { ...wallet[primary.id], ...primary },
+    ...others.map((bumpkin) => ({ ...wallet[bumpkin.id], ...bumpkin })),
+  ];
+
+  return placedBumpkins;
+};
+
 export const Land: React.FC = () => {
   const { gameService } = useContext(Context);
   const [gameState] = useActor(gameService);
@@ -409,6 +409,10 @@ export const Land: React.FC = () => {
 
   const { expansions, buildings, collectibles, chickens, bumpkin } = state;
   const [isEditing, setIsEditing] = useState(false);
+
+  const [placedBumpkins, setPlacedBumpkins] = useState<
+    (Bumpkin & PlacedBumpkin)[]
+  >(getPlacedBumpkins(state.bumpkins));
 
   let expandedCount = expansions.length;
   const latestLand = expansions[expansions.length - 1];
@@ -424,7 +428,23 @@ export const Land: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    setIsEditing(gameState.matches("editing"));
+    if (gameState.matches("editing")) {
+      setIsEditing(true);
+
+      const event = gameState.event as EditEvent;
+
+      // If moving a bumpkin, remove it from placed bumpkins so it doesn't show up twice on the map
+      if (event.action === "bumpkin.moved") {
+        const filteredBumpkins = placedBumpkins.filter(
+          (bumpkin) => bumpkin.id !== event.bumpkinId
+        );
+
+        setPlacedBumpkins(filteredBumpkins);
+      }
+    } else {
+      setIsEditing(false);
+      setPlacedBumpkins(getPlacedBumpkins(state.bumpkins));
+    }
   }, [gameState.value]);
 
   const boatCoordinates = {
@@ -454,7 +474,7 @@ export const Land: React.FC = () => {
             buildings,
             collectibles,
             chickens,
-            bumpkins: gameState.context.state.bumpkins as Bumpkins,
+            bumpkins: placedBumpkins,
             isEditing,
           }).sort((a, b) => b.props.y - a.props.y)}
         </div>

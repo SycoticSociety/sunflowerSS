@@ -351,6 +351,15 @@ export const OFFLINE_FARM: GameState = {
         },
         createdAt: 0,
       },
+      {
+        id: "345",
+        readyAt: 0,
+        coordinates: {
+          x: 6,
+          y: 5,
+        },
+        createdAt: 0,
+      },
     ],
   },
   airdrops: [],

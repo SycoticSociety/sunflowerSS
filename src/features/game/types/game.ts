@@ -367,16 +367,18 @@ export type TreasureHole = {
   discovered: InventoryItemName | null;
 };
 
-type PlaceBumpkin = {
+export type PlacedBumpkin = {
   id: number;
   coordinates: Coordinates;
+  readyAt: number;
+  createdAt: number;
 };
 
 export type Bumpkins = {
   wallet: Record<number, Bumpkin>;
   farming: {
-    primary: PlaceBumpkin;
-    others: PlaceBumpkin[];
+    primary: PlacedBumpkin;
+    others: PlacedBumpkin[];
   };
 };
 

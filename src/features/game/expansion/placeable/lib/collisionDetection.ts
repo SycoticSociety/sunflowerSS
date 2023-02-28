@@ -12,7 +12,10 @@ import {
   getKeys,
 } from "features/game/types/craftables";
 import { BUILDINGS_DIMENSIONS } from "features/game/types/buildings";
-import { DEFAULT_BUMPKIN_POSITION } from "features/island/bumpkin/types/character";
+import {
+  BUMPKIN_DIMENSIONS,
+  DEFAULT_BUMPKIN_POSITION,
+} from "features/island/bumpkin/types/character";
 
 type BoundingBox = Position;
 
@@ -314,7 +317,26 @@ function detectLandCornerCollision(
   });
 }
 
-function detectBumpkinCollision(boundingBox: BoundingBox) {
+function detectBumpkinCollision(state: GameState, boundingBox: BoundingBox) {
+  const { bumpkins } = state;
+
+  if (!bumpkins) return false;
+
+  const placedBumpkins = [bumpkins.farming.primary, ...bumpkins.farming.others];
+
+  const boundingBoxes = placedBumpkins.map((bumpkin) => ({
+    x: bumpkin.coordinates.x,
+    y: bumpkin.coordinates.y,
+    height: BUMPKIN_DIMENSIONS.Bumpkin.height,
+    width: BUMPKIN_DIMENSIONS.Bumpkin.width,
+  }));
+
+  return boundingBoxes.some((resourceBoundingBox) =>
+    isOverlapping(boundingBox, resourceBoundingBox)
+  );
+}
+
+function detectHomeBaseCollision(boundingBox: BoundingBox) {
   return isOverlapping(boundingBox, {
     x: DEFAULT_BUMPKIN_POSITION.x,
     y: DEFAULT_BUMPKIN_POSITION.y,
@@ -336,6 +358,7 @@ export function detectCollision(state: GameState, position: Position) {
     detectPlaceableCollision(state, position) ||
     detectLandCornerCollision(completedExpansions, position) ||
     detectChickenCollision(state, position) ||
-    detectBumpkinCollision(position)
+    detectHomeBaseCollision(position) ||
+    detectBumpkinCollision(state, position)
   );
 }

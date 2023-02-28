@@ -84,6 +84,16 @@ export const TentModal: React.FC<Props> = ({ onClose }) => {
     onClose();
   };
 
+  const onMove = () => {
+    gameService.send("EDIT", {
+      bumpkinId: selectedBumpkinId,
+      placeable: "Bumpkin",
+      action: "bumpkin.moved",
+    });
+
+    onClose();
+  };
+
   const Actions = () => {
     const selectedIsFarming = farmingBumpkinsIds.includes(selectedBumpkinId);
 
@@ -92,13 +102,13 @@ export const TentModal: React.FC<Props> = ({ onClose }) => {
     if (selectedIsFarming && farmingBumpkinCount > 1) {
       return (
         <div className="flex space-x-1 sm:flex-col sm:space-x-0 sm:space-y-1">
-          <Button>Move</Button>
+          <Button onClick={onMove}>Move</Button>
           <Button>Remove</Button>
         </div>
       );
     }
 
-    return <Button>Move</Button>;
+    return <Button onClick={onMove}>Move</Button>;
   };
 
   const MainContent = () => (
@@ -116,8 +126,8 @@ export const TentModal: React.FC<Props> = ({ onClose }) => {
           ))}
           {emptySlots > 0 &&
             new Array(emptySlots)
-              .fill(uuidv4())
-              .map((uuid) => <EmptyBumpkinBox key={uuid} />)}
+              .fill(null)
+              .map(() => <EmptyBumpkinBox key={uuidv4()} />)}
         </div>
       </div>
       <div>

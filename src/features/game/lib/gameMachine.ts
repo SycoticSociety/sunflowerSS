@@ -95,7 +95,7 @@ type SyncEvent = {
   blockBucks: number;
 };
 
-type EditEvent = {
+export type EditEvent = {
   bumpkinId?: number;
   placeable: BuildingName | CollectibleName | "Bumpkin";
   action: GameEventName<PlacementEvent>;

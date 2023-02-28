@@ -3,22 +3,8 @@ import patch from "assets/land/bumpkin_patch.png";
 import { PIXEL_SCALE } from "features/game/lib/constants";
 import { Airdrop } from "features/game/expansion/components/Airdrop";
 import { LetterBox } from "features/farming/mail/LetterBox";
-import { DynamicMiniNFT, DynamicMiniNFTProps } from "./DynamicMiniNFT";
 
-export const CharacterPlayground: React.FC<
-  DynamicMiniNFTProps & { bumpkinId: number }
-> = ({
-  bumpkinId,
-  body,
-  hair,
-  shirt,
-  pants,
-  hat,
-  suit,
-  onesie,
-  wings,
-  dress,
-}) => {
+export const HomeBase: React.FC = () => {
   return (
     <>
       <img
@@ -29,18 +15,6 @@ export const CharacterPlayground: React.FC<
           top: 0,
           left: 0,
         }}
-      />
-      <DynamicMiniNFT
-        bumpkinId={bumpkinId}
-        body={body}
-        hair={hair}
-        shirt={shirt}
-        pants={pants}
-        hat={hat}
-        suit={suit}
-        onesie={onesie}
-        wings={wings}
-        dress={dress}
       />
       <div
         className="absolute"

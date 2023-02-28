@@ -38,7 +38,7 @@ export const placeBumpkin = ({
   }
 
   const placedBumpkins = [
-    stateCopy.bumpkins.farming.primary,
+    stateCopy.bumpkins.farming.primary.id,
     ...stateCopy.bumpkins.farming.others.map(
       (placedBumpkin) => placedBumpkin.id
     ),

@@ -1,5 +1,14 @@
-import { TEST_FARM } from "features/game/lib/constants";
-import { GameState, LandExpansion, Position } from "features/game/types/game";
+import { INITIAL_BUMPKIN, TEST_FARM } from "features/game/lib/constants";
+import {
+  Bumpkins,
+  GameState,
+  LandExpansion,
+  Position,
+} from "features/game/types/game";
+import {
+  BUMPKIN_DIMENSIONS,
+  DEFAULT_BUMPKIN_POSITION,
+} from "features/island/bumpkin/types/character";
 import cloneDeep from "lodash.clonedeep";
 import {
   detectCollision,
@@ -197,6 +206,46 @@ describe("detectCollisions", () => {
       y: 1,
       height: 1,
       width: 1,
+    });
+
+    expect(hasCollision).toBe(true);
+  });
+
+  it("returns true if a collision is detected with a bumpkin", () => {
+    const walletBumpkins: Bumpkins["wallet"] = {
+      1: INITIAL_BUMPKIN,
+      2: {
+        ...INITIAL_BUMPKIN,
+        id: 2,
+      },
+      3: {
+        ...INITIAL_BUMPKIN,
+        id: 3,
+      },
+    };
+
+    const state: GameState = cloneDeep(TEST_FARM);
+    state.bumpkins = {
+      wallet: walletBumpkins,
+      farming: {
+        primary: {
+          id: 1,
+          coordinates: {
+            x: DEFAULT_BUMPKIN_POSITION.x,
+            y: DEFAULT_BUMPKIN_POSITION.y,
+          },
+          createdAt: 0,
+          readyAt: 0,
+        },
+        others: [],
+      },
+    };
+
+    const hasCollision = detectCollision(state, {
+      x: DEFAULT_BUMPKIN_POSITION.x,
+      y: DEFAULT_BUMPKIN_POSITION.y,
+      height: BUMPKIN_DIMENSIONS.Bumpkin.height,
+      width: BUMPKIN_DIMENSIONS.Bumpkin.width,
     });
 
     expect(hasCollision).toBe(true);
