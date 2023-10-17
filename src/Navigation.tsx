@@ -13,7 +13,7 @@ import * as AuthProvider from "features/auth/lib/Provider";
 
 import { Splash } from "features/auth/components/Splash";
 import { Auth } from "features/auth/Auth";
-import { Forbidden } from "features/auth/components/Forbidden";
+
 import { useImagePreloader } from "features/auth/useImagePreloader";
 import { LandExpansion } from "features/game/expansion/LandExpansion";
 import { CONFIG } from "lib/config";
@@ -119,7 +119,7 @@ export const Navigation: React.FC = () => {
                   path="/goblins"
                   element={
                     <Splash>
-                      <Forbidden />
+                   
                     </Splash>
                   }
                 />
