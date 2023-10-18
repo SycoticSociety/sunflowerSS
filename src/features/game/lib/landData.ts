@@ -277,17 +277,15 @@ export const INITIAL_EXPANSIONS = 3;
 
 const INITIAL_BUMPKIN: Bumpkin = {
   id: 1,
-  experience: 4680500,
-  tokenUri: "bla",
-  equipped: {
-    body: "Dark Brown Farmer Potion",
-    hair: "White Long Hair", // Add the 'hair' property
-    shirt: "Red Farmer Shirt",
-    pants: "Brown Suspenders",
+ 
+    experience: 4680500,
+    tokenUri: "bla",
+    equipped: {
+    body: "Beige Farmer Potion",
     shoes: "Black Farmer Boots",
     tool: "Farmer Pitchfork",
+    background: "Farm Background",
     onesie: "Eggplant Onesie",
-    background: "China Town Background", // Add a background property with an empty string or provide a valid value
   },
   skills: {
     "Michelin Stars": 1,
