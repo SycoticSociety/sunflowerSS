@@ -283,10 +283,11 @@ const INITIAL_BUMPKIN: Bumpkin = {
     equipped: {
     body: "Beige Farmer Potion",
     shoes: "Black Farmer Boots",
-    tool: "Farmer Pitchfork",
-    background: "Farm Background",
+    shirt: "Pineapple Shirt",
+    tool: "Ancient War Hammer",
+    background: "China Town Background",
     onesie: "Eggplant Onesie",
-    hair: "Brown Long Hair"
+    hair: "Fire Hair",
     
     },
   skills: {
