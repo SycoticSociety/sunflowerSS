@@ -15,7 +15,6 @@ import { Splash } from "features/auth/components/Splash";
 import { Auth } from "features/auth/Auth";
 
 import { useImagePreloader } from "features/auth/useImagePreloader";
-import { LandExpansion } from "features/game/expansion/LandExpansion";
 import { CONFIG } from "lib/config";
 import { Retreat } from "features/retreat/Retreat";
 import { Builder } from "features/builder/Builder";
@@ -24,11 +23,12 @@ import { AuthMachineState } from "features/auth/lib/authMachine";
 import { ZoomProvider } from "components/ZoomProvider";
 import { World } from "features/world/World";
 import { CommunityTools } from "features/world/ui/CommunityTools";
+import { Helios } from "features/helios/Helios"; // Added Helios import
 
 /**
  * FarmID must always be passed to the /retreat/:id route.
  * The problem is that when deep-linking to goblin trader, the FarmID will not be present.
- * This reacter-router helper component will compute correct route and navigate to retreat.
+ * This reacter-router helper component will compute the correct route and navigate to retreat.
  */
 const TraderDeeplinkHandler: React.FC<{ farmId?: number }> = ({ farmId }) => {
   const [params] = useSearchParams();
@@ -49,8 +49,8 @@ const selectState = (state: AuthMachineState) => ({
 });
 
 /**
- * Entry point for game which reflects the user session state
- * Controls flow of authorised and unauthorised games
+ * Entry point for the game which reflects the user session state
+ * Controls the flow of authorized and unauthorized games
  */
 export const Navigation: React.FC = () => {
   const { authService } = useContext(AuthProvider.Context);
@@ -100,7 +100,7 @@ export const Navigation: React.FC = () => {
     const _showGame = state.isAuthorised || state.isVisiting;
 
     // TODO: look into this further
-    // This is to prevent a modal clash when the authmachine switches
+    // This is to prevent a modal clash when the auth machine switches
     // to the game machine.
     setTimeout(() => setShowGame(_showGame), 20);
   }, [state]);
@@ -112,14 +112,14 @@ export const Navigation: React.FC = () => {
         <ZoomProvider>
           <HashRouter>
             <Routes>
-              <Route path="/" element={<LandExpansion />} />
+              <Route path="/" element={<Helios />} /> {/* Use Helios as the default starting map */}
               {/* Forbid entry to Goblin Village when in Visiting State show Forbidden screen */}
               {!state.isVisiting && (
                 <Route
                   path="/goblins"
                   element={
                     <Splash>
-                   
+                      {/* You can add content for the Goblin Village here */}
                     </Splash>
                   }
                 />
@@ -134,12 +134,12 @@ export const Navigation: React.FC = () => {
                   path="/community-tools"
                   element={<CommunityTools key="community-tools" />}
                 />
-              )}
+              }
 
-              <Route path="/visit/*" element={<LandExpansion key="visit" />} />
+              <Route path="/visit/*" element={<Helios key="visit" />} /> {/* Use Helios for visiting as well */
               <Route
                 path="/land/:id?/*"
-                element={<LandExpansion key="land" />}
+                element={<Helios key="land" />} // Use Helios for land
               />
               <Route path="/retreat">
                 <Route
