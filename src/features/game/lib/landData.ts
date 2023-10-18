@@ -280,14 +280,14 @@ const INITIAL_BUMPKIN: Bumpkin = {
   experience: 4680500,
   tokenUri: "bla",
   equipped: {
-
     body: "Dark Brown Farmer Potion",
     hair: "White Long Hair",
     shirt: "Red Farmer Shirt",
     pants: "Brown Suspenders",
     shoes: "Black Farmer Boots",
     tool: "Farmer Pitchfork",
-    onesie: "Eggplant Onesie", // Removed the second "background" property
+    onesie: "Eggplant Onesie",
+    background: "China Town Background", // Add a background property with an empty string or provide a valid value
   },
   skills: {
     "Michelin Stars": 1,
@@ -299,6 +299,7 @@ const INITIAL_BUMPKIN: Bumpkin = {
     "Reindeer Carrot Fed": 50,
   },
 };
+
 
 
 export const OFFLINE_FARM: GameState = {
