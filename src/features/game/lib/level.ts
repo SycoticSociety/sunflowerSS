@@ -140,7 +140,7 @@ export const isMaxLevel = (experience: number): boolean => {
 };
 
 export const getBumpkinLevel = (experience: number): BumpkinLevel => {
-  let bumpkinLevel: BumpkinLevel = 1;
+  let bumpkinLevel: BumpkinLevel = 60;
   for (const key in LEVEL_EXPERIENCE) {
     const level = Number(key) as BumpkinLevel;
     if (experience >= LEVEL_EXPERIENCE[level]) {
