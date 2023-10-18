@@ -277,7 +277,7 @@ export const INITIAL_EXPANSIONS = 15;
 
 const INITIAL_BUMPKIN: Bumpkin = {
   id: 1,
-  experience: 10000,
+  experience: 4680500,
   tokenUri: "bla",
   equipped: {
     body: "Beige Farmer Potion",
@@ -288,7 +288,7 @@ const INITIAL_BUMPKIN: Bumpkin = {
     shoes: "Black Farmer Boots",
     tool: "Farmer Pitchfork",
     background: "Farm Background",
-    onesie: "Eggplant Onesie",
+    onesie: "Corn Onesie",
   },
   skills: {
     "Michelin Stars": 1,
