@@ -287,7 +287,7 @@ const INITIAL_BUMPKIN: Bumpkin = {
     pants: "Brown Suspenders",
     shoes: "Black Farmer Boots",
     tool: "Farmer Pitchfork",
-    onesie: "Shark Onesie", // Removed the second "background" property
+    onesie: "Eggplant Onesie", // Removed the second "background" property
   },
   skills: {
     "Michelin Stars": 1,
