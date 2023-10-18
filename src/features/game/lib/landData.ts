@@ -273,14 +273,14 @@ export const INITIAL_RESOURCES: Pick<
   iron: {},
 };
 
-export const INITIAL_EXPANSIONS = 15;
+export const INITIAL_EXPANSIONS = 3;
 
 const INITIAL_BUMPKIN: Bumpkin = {
   id: 1,
   experience: 4680500,
   tokenUri: "bla",
   equipped: {
-    background: "Cemetery Background",
+
     body: "Dark Brown Farmer Potion",
     hair: "White Long Hair",
     shirt: "Red Farmer Shirt",
