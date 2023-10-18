@@ -17,7 +17,7 @@ import { Auth } from "features/auth/Auth";
 import { useImagePreloader } from "features/auth/useImagePreloader";
 import { CONFIG } from "lib/config";
 import { Retreat } from "features/retreat/Retreat";
-import { Builder } from "features/builder/Builder";
+import { Builder from "features/builder/Builder"; // Adjusted import
 import { wallet } from "lib/blockchain/wallet";
 import { AuthMachineState } from "features/auth/lib/authMachine";
 import { ZoomProvider } from "components/ZoomProvider";
@@ -27,8 +27,8 @@ import { Helios } from "features/helios/Helios"; // Added Helios import
 
 /**
  * FarmID must always be passed to the /retreat/:id route.
- * The problem is that when deep-linking to goblin trader, the FarmID will not be present.
- * This reacter-router helper component will compute the correct route and navigate to retreat.
+ * The problem is that when deep-linking to the goblin trader, the FarmID will not be present.
+ * This react-router helper component will compute the correct route and navigate to retreat.
  */
 const TraderDeeplinkHandler: React.FC<{ farmId?: number }> = ({ farmId }) => {
   const [params] = useSearchParams();
@@ -49,7 +49,7 @@ const selectState = (state: AuthMachineState) => ({
 });
 
 /**
- * Entry point for the game which reflects the user session state
+ * Entry point for the game, which reflects the user session state
  * Controls the flow of authorized and unauthorized games
  */
 export const Navigation: React.FC = () => {
@@ -113,7 +113,7 @@ export const Navigation: React.FC = () => {
           <HashRouter>
             <Routes>
               <Route path="/" element={<Helios />} /> {/* Use Helios as the default starting map */}
-              {/* Forbid entry to Goblin Village when in Visiting State show Forbidden screen */}
+              {/* Forbid entry to Goblin Village when in Visiting State and show Forbidden screen */}
               {!state.isVisiting && (
                 <Route
                   path="/goblins"
@@ -123,7 +123,7 @@ export const Navigation: React.FC = () => {
                     </Splash>
                   }
                 />
-              )}
+              }
               <Route path="/world/:name" element={<World key="world" />} />
               <Route
                 path="/community/:name"
