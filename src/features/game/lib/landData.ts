@@ -285,11 +285,9 @@ const INITIAL_BUMPKIN: Bumpkin = {
     hair: "White Long Hair",
     shirt: "Red Farmer Shirt",
     pants: "Brown Suspenders",
-
     shoes: "Black Farmer Boots",
     tool: "Farmer Pitchfork",
-    background: "Farm Background",
-    onesie: "Shark Onesie",
+    onesie: "Shark Onesie", // Removed the second "background" property
   },
   skills: {
     "Michelin Stars": 1,
@@ -301,6 +299,7 @@ const INITIAL_BUMPKIN: Bumpkin = {
     "Reindeer Carrot Fed": 50,
   },
 };
+
 
 export const OFFLINE_FARM: GameState = {
   id: 4,
