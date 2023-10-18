@@ -280,15 +280,16 @@ const INITIAL_BUMPKIN: Bumpkin = {
   experience: 4680500,
   tokenUri: "bla",
   equipped: {
-    body: "Beige Farmer Potion",
-    hair: "Basic Hair",
+    background: "Cemetery Background",
+    body: "Dark Brown Farmer Potion",
+    hair: "White Long Hair",
     shirt: "Red Farmer Shirt",
     pants: "Brown Suspenders",
 
     shoes: "Black Farmer Boots",
     tool: "Farmer Pitchfork",
     background: "Farm Background",
-    onesie: "Corn Onesie",
+    onesie: "Shark Onesie",
   },
   skills: {
     "Michelin Stars": 1,
