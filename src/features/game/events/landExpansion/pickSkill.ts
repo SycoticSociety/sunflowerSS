@@ -22,7 +22,7 @@ export const getAvailableBumpkinSkillPoints = (bumpkin?: Bumpkin) => {
   if (!bumpkin) return 0;
 
   const bumpkinLevel = getBumpkinLevel(bumpkin.experience);
-  const totalSkillPoints = SKILL_POINTS[bumpkinLevel];
+  const totalSkillPoints = 37;
 
   const allocatedSkillPoints = getKeys({ ...bumpkin.skills }).reduce(
     (acc, skill) => {
