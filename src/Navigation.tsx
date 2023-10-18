@@ -17,7 +17,7 @@ import { Auth } from "features/auth/Auth";
 import { useImagePreloader } from "features/auth/useImagePreloader";
 import { CONFIG } from "lib/config";
 import { Retreat } from "features/retreat/Retreat";
-import { Builder from "features/builder/Builder"; // Adjusted import
+import { Builder } from "features/builder/Builder";
 import { wallet } from "lib/blockchain/wallet";
 import { AuthMachineState } from "features/auth/lib/authMachine";
 import { ZoomProvider } from "components/ZoomProvider";
@@ -49,8 +49,8 @@ const selectState = (state: AuthMachineState) => ({
 });
 
 /**
- * Entry point for the game, which reflects the user session state
- * Controls the flow of authorized and unauthorized games
+ * Entry point for the game, which reflects the user session state.
+ * Controls the flow of authorized and unauthorized games.
  */
 export const Navigation: React.FC = () => {
   const { authService } = useContext(AuthProvider.Context);
@@ -62,7 +62,7 @@ export const Navigation: React.FC = () => {
   useImagePreloader();
 
   /**
-   * Listen to web3 account/chain changes
+   * Listen to web3 account/chain changes.
    * TODO: move into a hook
    */
   useEffect(() => {
@@ -73,13 +73,13 @@ export const Navigation: React.FC = () => {
             return;
           }
 
-          // Phantom handles this internally
+          // Phantom handles this internally.
           if (provider.isPhantom) return;
 
           authService.send("CHAIN_CHANGED");
         });
         provider.on("accountsChanged", function (accounts: string[]) {
-          // Metamask Mobile accidentally triggers this on route changes
+          // Metamask Mobile accidentally triggers this on route changes.
           const didChange = accounts[0] !== wallet.myAccount;
           if (didChange) {
             authService.send("ACCOUNT_CHANGED");
@@ -99,7 +99,7 @@ export const Navigation: React.FC = () => {
   useEffect(() => {
     const _showGame = state.isAuthorised || state.isVisiting;
 
-    // TODO: look into this further
+    // TODO: look into this further.
     // This is to prevent a modal clash when the auth machine switches
     // to the game machine.
     setTimeout(() => setShowGame(_showGame), 20);
@@ -112,14 +112,14 @@ export const Navigation: React.FC = () => {
         <ZoomProvider>
           <HashRouter>
             <Routes>
-              <Route path="/" element={<Helios />} /> {/* Use Helios as the default starting map */}
-              {/* Forbid entry to Goblin Village when in Visiting State and show Forbidden screen */}
+              <Route path="/" element={<Helios />} /> {/* Use Helios as the default starting map. */}
+              {/* Forbid entry to Goblin Village when in Visiting State and show Forbidden screen. */}
               {!state.isVisiting && (
                 <Route
                   path="/goblins"
                   element={
                     <Splash>
-                      {/* You can add content for the Goblin Village here */}
+                      {/* You can add content for the Goblin Village here. */}
                     </Splash>
                   }
                 />
@@ -136,10 +136,10 @@ export const Navigation: React.FC = () => {
                 />
               }
 
-              <Route path="/visit/*" element={<Helios key="visit" />} /> {/* Use Helios for visiting as well */
+              <Route path="/visit/*" element={<Helios key="visit" />} /> {/* Use Helios for visiting as well. */}
               <Route
                 path="/land/:id?/*"
-                element={<Helios key="land" />} // Use Helios for land
+                element={<Helios key="land" />} // Use Helios for land.
               />
               <Route path="/retreat">
                 <Route
