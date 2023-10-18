@@ -15,6 +15,7 @@ import { Splash } from "features/auth/components/Splash";
 import { Auth } from "features/auth/Auth";
 
 import { useImagePreloader } from "features/auth/useImagePreloader";
+import { LandExpansion } from "features/game/expansion/LandExpansion";
 import { CONFIG } from "lib/config";
 import { Retreat } from "features/retreat/Retreat";
 import { Builder } from "features/builder/Builder";
@@ -23,12 +24,11 @@ import { AuthMachineState } from "features/auth/lib/authMachine";
 import { ZoomProvider } from "components/ZoomProvider";
 import { World } from "features/world/World";
 import { CommunityTools } from "features/world/ui/CommunityTools";
-import { Helios } from "features/helios/Helios"; // Added Helios import
 
 /**
  * FarmID must always be passed to the /retreat/:id route.
- * The problem is that when deep-linking to the goblin trader, the FarmID will not be present.
- * This react-router helper component will compute the correct route and navigate to retreat.
+ * The problem is that when deep-linking to goblin trader, the FarmID will not be present.
+ * This reacter-router helper component will compute correct route and navigate to retreat.
  */
 const TraderDeeplinkHandler: React.FC<{ farmId?: number }> = ({ farmId }) => {
   const [params] = useSearchParams();
@@ -49,8 +49,8 @@ const selectState = (state: AuthMachineState) => ({
 });
 
 /**
- * Entry point for the game, which reflects the user session state.
- * Controls the flow of authorized and unauthorized games.
+ * Entry point for game which reflects the user session state
+ * Controls flow of authorised and unauthorised games
  */
 export const Navigation: React.FC = () => {
   const { authService } = useContext(AuthProvider.Context);
@@ -62,7 +62,7 @@ export const Navigation: React.FC = () => {
   useImagePreloader();
 
   /**
-   * Listen to web3 account/chain changes.
+   * Listen to web3 account/chain changes
    * TODO: move into a hook
    */
   useEffect(() => {
@@ -73,13 +73,13 @@ export const Navigation: React.FC = () => {
             return;
           }
 
-          // Phantom handles this internally.
+          // Phantom handles this internally
           if (provider.isPhantom) return;
 
           authService.send("CHAIN_CHANGED");
         });
         provider.on("accountsChanged", function (accounts: string[]) {
-          // Metamask Mobile accidentally triggers this on route changes.
+          // Metamask Mobile accidentally triggers this on route changes
           const didChange = accounts[0] !== wallet.myAccount;
           if (didChange) {
             authService.send("ACCOUNT_CHANGED");
@@ -99,8 +99,8 @@ export const Navigation: React.FC = () => {
   useEffect(() => {
     const _showGame = state.isAuthorised || state.isVisiting;
 
-    // TODO: look into this further.
-    // This is to prevent a modal clash when the auth machine switches
+    // TODO: look into this further
+    // This is to prevent a modal clash when the authmachine switches
     // to the game machine.
     setTimeout(() => setShowGame(_showGame), 20);
   }, [state]);
@@ -112,18 +112,18 @@ export const Navigation: React.FC = () => {
         <ZoomProvider>
           <HashRouter>
             <Routes>
-              <Route path="/" element={<Helios />} /> {/* Use Helios as the default starting map. */}
-              {/* Forbid entry to Goblin Village when in Visiting State and show Forbidden screen. */}
+              <Route path="/" element={<LandExpansion />} />
+              {/* Forbid entry to Goblin Village when in Visiting State show Forbidden screen */}
               {!state.isVisiting && (
                 <Route
                   path="/goblins"
                   element={
                     <Splash>
-                      {/* You can add content for the Goblin Village here. */}
+                   
                     </Splash>
                   }
                 />
-              }
+              )}
               <Route path="/world/:name" element={<World key="world" />} />
               <Route
                 path="/community/:name"
@@ -134,12 +134,12 @@ export const Navigation: React.FC = () => {
                   path="/community-tools"
                   element={<CommunityTools key="community-tools" />}
                 />
-              }
+              )}
 
-              <Route path="/visit/*" element={<Helios key="visit" />} /> {/* Use Helios for visiting as well. */}
+              <Route path="/visit/*" element={<LandExpansion key="visit" />} />
               <Route
                 path="/land/:id?/*"
-                element={<Helios key="land" />} // Use Helios for land.
+                element={<LandExpansion key="land" />}
               />
               <Route path="/retreat">
                 <Route
@@ -159,4 +159,4 @@ export const Navigation: React.FC = () => {
       )}
     </>
   );
-};
+};  
