@@ -9,10 +9,10 @@ import {
 } from "../types/game";
 
 // Our "zoom" factor
-export const PIXEL_SCALE = 2.625;
+export const PIXEL_SCALE = 2.825;
 
 // How many pixels a raw green square is
-export const SQUARE_WIDTH = 16;
+export const SQUARE_WIDTH = 18;
 
 export const GRID_WIDTH_PX = PIXEL_SCALE * SQUARE_WIDTH;
 
