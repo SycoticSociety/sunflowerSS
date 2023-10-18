@@ -288,6 +288,7 @@ const INITIAL_BUMPKIN: Bumpkin = {
     background: "China Town Background",
     onesie: "Eggplant Onesie",
     hair: "Fire Hair",
+    pants: "Brown Suspenders",
     
     },
   skills: {
