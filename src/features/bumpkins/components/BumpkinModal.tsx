@@ -125,8 +125,10 @@ export const BumpkinModal: React.FC<Props> = ({
     );
   }
 
-  const experience = bumpkin?.experience ?? 0;
-  const level = getBumpkinLevel(experience);
+  
+const experience = 4680500; // Set to the required experience for level 65
+const level = getBumpkinLevel(experience);
+
   const maxLevel = isMaxLevel(experience);
 
   const hasAvailableSP = getAvailableBumpkinSkillPoints(bumpkin) > 0;
