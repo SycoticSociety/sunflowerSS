@@ -1,18 +1,21 @@
 import { Button } from "components/ui/Button";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 
 import { NPC_WEARABLES } from "lib/npcs";
 import { Context } from "features/game/GameProvider";
 import goldPass from "assets/announcements/gold_pass.png";
 import { Panel } from "components/ui/Panel";
+
 interface Props {
   onClose: () => void;
 }
 
 export const GoldPassModal: React.FC<Props> = ({ onClose }) => {
   const { gameService } = useContext(Context);
+  const [purchased, setPurchased] = useState(true); // Set the state to always true
 
   const price = 0.00;
+
   const Content = () => {
     return (
       <>
@@ -43,16 +46,9 @@ export const GoldPassModal: React.FC<Props> = ({ onClose }) => {
           <Button className="mr-1" onClick={onClose}>
             No thanks
           </Button>
-          <Button
-            onClick={() => {
-              gameService.send("PURCHASE_ITEM", {
-                name: "Gold Pass",
-              });
-              onClose();
-            }}
-          >
-            {`Buy now $${price}`}
-          </Button>
+          {purchased ? ( // Always display "Purchased"
+            <span className="text-green-500">Purchased</span>
+          )}
         </div>
         <div className="flex justify-center my-0.5">
           <span className="text-xxs italic">{`Price is paid in $MATIC equivalent of $${price} USD`}</span>
@@ -60,6 +56,7 @@ export const GoldPassModal: React.FC<Props> = ({ onClose }) => {
       </>
     );
   };
+
   return (
     <Panel bumpkinParts={NPC_WEARABLES.grubnuk}>
       <Content />
