@@ -15,7 +15,7 @@ export const GarbageCollectorModal: React.FC = () => {
         <div className="p-2">
           <p className="mb-3">Got Junk???.</p>
           <p className="mb-2">
-            {`I'm the Garbage Trader, and I'll buy any and all S#%T coins on Cronos and beyond.`}
+            {`I'm the Garbage Trader, and I'll buy any and all S#%T tokens on Cronos and beyond.`}
           </p>
         </div>
         <Button
