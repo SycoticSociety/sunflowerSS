@@ -1,7 +1,9 @@
 import React from "react";
-
+import { Button } from "components/ui/Button";
 import goldPass from "assets/announcements/gold_pass.png";
 import { Panel } from "components/ui/Panel";
+import { NPC_WEARABLES } from "lib/npcs";
+
 
 interface Props {
   onClose: () => void;
