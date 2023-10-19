@@ -21,12 +21,11 @@ export const ExoticShopItems: React.FC<Props> = ({ onClose }) => {
     >
       <div className="p-2">
         <p className="mb-4">
-          Our bean shop is closing as our beans embark on a new journey with a
-          mad scientist.
+          Sycotic's little shop of Demons is currently being forged in the depths of Hell!
         </p>
         <p className="mb-4">{`Thank you for being part of our legume-loving community.`}</p>
         <p>Best regards,</p>
-        <p>The Bean Team</p>
+        <p>HellzGate Team.</p>
       </div>
     </CloseButtonPanel>
   );
