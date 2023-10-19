@@ -2,7 +2,7 @@ import Decimal from "decimal.js-light";
 import { Ingredient } from "features/game/types/craftables";
 import { Coordinates } from "../components/MapPlacement";
 
-export const LAND_SIZE = 6;
+export const LAND_SIZE = 9;
 
 /**
  * The expansion origin is the center point of a land expansion.
