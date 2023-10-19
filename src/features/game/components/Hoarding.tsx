@@ -20,11 +20,18 @@ export const Hoarding: React.FC = () => {
   const maxedItemImage =
     maxedItem === "SFL" ? token : ITEM_DETAILS[maxedItem].image;
   const itemName = maxedItem === "SFL" ? maxedItem : maxedItem.toLowerCase();
+  
+  // Check if the player has 500 or more SFL to trigger the hoarding mechanics
+  const isHoardingEnabled = gameState.context.sfl >= 500;
 
   const sync = () => {
-    gameService.send("ACKNOWLEDGE");
-
-    openModal("STORE_ON_CHAIN");
+    if (isHoardingEnabled) {
+      gameService.send("ACKNOWLEDGE");
+      openModal("STORE_ON_CHAIN");
+    } else {
+      // Handle the case when hoarding is not enabled
+      // You can show a message or perform another action here
+    }
   };
 
   const onAcknowledge = () => {
@@ -61,17 +68,25 @@ export const Hoarding: React.FC = () => {
         <p className="text-xs sm:text-sm mb-1">
           {`To protect yourself and keep those precious resources safe, please sync them on chain before gathering any more ${itemName}.`}
         </p>
-        <div className="text-xs underline my-2 w-full">
-          <a
-            href="https://docs.sunflower-land.com/fundamentals/syncing-on-chain"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read more
-          </a>
-        </div>
+        {isHoardingEnabled ? (
+          <div className="text-xs underline my-2 w-full">
+            <a
+              href="https://docs.sunflower-land.com/fundamentals/syncing-on-chain"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Read more
+            </a>
+          </div>
+        ) : (
+          <p className="text-xs my-2 w-full">
+            You need 500 or more SFL to enable hoarding mechanics.
+          </p>
+        )}
       </div>
-      <Button onClick={sync}>Store progress on chain</Button>
+      {isHoardingEnabled && (
+        <Button onClick={sync}>Store progress on chain</Button>
+      )}
     </>
   );
 };
