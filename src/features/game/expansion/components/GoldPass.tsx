@@ -12,7 +12,7 @@ interface Props {
 export const GoldPassModal: React.FC<Props> = ({ onClose }) => {
   const { gameService } = useContext(Context);
 
-  const price = 4.99;
+  const price = 0.00;
   const Content = () => {
     return (
       <>
