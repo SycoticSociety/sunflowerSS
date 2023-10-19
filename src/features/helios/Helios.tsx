@@ -18,6 +18,8 @@ import { DeliveryModal } from "features/island/delivery/Delivery";
 import { NPC } from "features/island/bumpkin/components/NPC";
 import { NPC_WEARABLES } from "lib/npcs";
 
+// ... (previous imports)
+
 export const GrubShop: React.FC = () => {
   const { gameService } = useContext(Context);
   const [
@@ -84,18 +86,21 @@ export const GrubShop: React.FC = () => {
               </div>
             </>
           ) : (
-            <img
-              src={stall}
-              style={{
-                width: `${PIXEL_SCALE * 59}px`,
-                bottom: `${PIXEL_SCALE * 12}px`,
-                left: `${PIXEL_SCALE * 0}px`,
-                cursor: "pointer"
-              }}
-              alt="bakery"
-              className="absolute"
-              onClick={openBakeryWebsite}
-            />
+            <div style={{ position: "relative" }}>
+              <a href="#" id="bakery-link" onClick={openBakeryWebsite}>
+                <img
+                  src={stall}
+                  style={{
+                    width: `${PIXEL_SCALE * 59}px`,
+                    bottom: `${PIXEL_SCALE * 12}px`,
+                    left: `${PIXEL_SCALE * 0}px`,
+                    cursor: "pointer"
+                  }}
+                  alt="bakery"
+                  className="absolute"
+                />
+              </a>
+            </div>
           )}
 
           <img
