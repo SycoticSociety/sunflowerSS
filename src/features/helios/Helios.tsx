@@ -1,175 +1,89 @@
-import React, { useContext } from "react";
-import { Modal } from "react-bootstrap";
+import { GRID_WIDTH_PX } from "features/game/lib/constants";
+import { Section, useScrollIntoView } from "lib/utils/hooks/useScrollIntoView";
+import React, { useContext, useLayoutEffect, useState } from "react";
 
-import stall from "assets/buildings/grub_shop.png";
-import goblinChef from "assets/npcs/goblin_chef.gif";
-import shadow from "assets/npcs/shadow.png";
-
-import { GRID_WIDTH_PX, PIXEL_SCALE } from "features/game/lib/constants";
+import background from "assets/land/helios.webp";
+import { GrubShop } from "./components/grubShop/GrubShop";
+import { Decorations } from "./components/decorations/Decorations";
+import { ExoticShop } from "./components/exoticShop/ExoticShop";
+import { HeliosSunflower } from "./components/HeliosSunflower";
+import { HeliosBlacksmith } from "./components/blacksmith/HeliosBlacksmith";
 import { Context } from "features/game/GameProvider";
 import { useActor } from "@xstate/react";
-import { GrubShopModal } from "./components/GrubShopModal";
-import { ITEM_DETAILS } from "features/game/types/images";
-import { ConsumableName } from "features/game/types/consumables";
-import { MapPlacement } from "features/game/expansion/components/MapPlacement";
-import { setImageWidth } from "lib/images";
-import { SUNNYSIDE } from "assets/sunnyside";
-import { DeliveryModal } from "features/island/delivery/Delivery";
-import { NPC } from "features/island/bumpkin/components/NPC";
-import { NPC_WEARABLES } from "lib/npcs";
+import { LostSunflorian } from "./components/npcs/LostSunflorian";
+import { IslandTravel } from "features/game/expansion/components/travel/IslandTravel";
 
-// ... (previous imports)
+// random seal spawn spots
+import { randomInt } from "lib/utils/random";
+import { Hud } from "features/island/hud/Hud";
+import { GarbageCollector } from "./components/garbageCollector/GarbageCollector";
+import { HeliosAuction } from "./components/heliosAuction/HeliosAuction";
+import { AuctionCountdown } from "features/retreat/components/auctioneer/AuctionCountdown";
+import { HayseedHank } from "./components/hayseedHank/HayseedHankPlaza";
 
-export const GrubShop: React.FC = () => {
+const spawn = [
+  [30, 15],
+  [10, 15],
+  [10, 25],
+  [35, 25],
+];
+
+const getRandomSpawn = () => {
+  const randomSpawn = randomInt(0, 4);
+  return spawn[randomSpawn];
+};
+
+export const Helios: React.FC = () => {
   const { gameService } = useContext(Context);
-  const [
-    {
-      context: { state },
-    },
-  ] = useActor(gameService);
+  const [gameState] = useActor(gameService);
+  const { state } = gameState.context;
+  const { bumpkin } = state;
+  const [sealSpawn] = useState(getRandomSpawn());
 
-  const [showModal, setShowModal] = React.useState(false);
+  const autosaving = gameState.matches("autosaving");
 
-  const closeModal = () => {
-    setShowModal(false);
-  };
+  const [scrollIntoView] = useScrollIntoView();
 
-  const ordersFulfilled = state.grubOrdersFulfilled ?? [];
-  let lastFulfilledItemName: ConsumableName | undefined;
-  if (ordersFulfilled.length > 0) {
-    lastFulfilledItemName = state.grubShop?.orders.find(
-      (order) => order.id === ordersFulfilled[ordersFulfilled.length - 1].id
-    )?.name;
-  }
+  useLayoutEffect(() => {
+    // Start with island centered
+    scrollIntoView(Section.HeliosBackGround, "auto");
+  }, []);
 
-  const showDeliveries = Date.now() > new Date("2023-05-31").getTime();
-
-  const openBakeryWebsite = () => {
-    window.open("https://example.com", "_blank");
-  };
-
+  // Load data
   return (
     <>
-      <Modal centered show={showModal} onHide={closeModal}>
-        {showDeliveries ? (
-          <DeliveryModal isOpen={showModal} onClose={closeModal} />
-        ) : (
-          <GrubShopModal onClose={closeModal} />
-        )}
-      </Modal>
-
-      <MapPlacement x={2} y={1} height={5} width={5}>
-        <div className="relative w-full h-full">
-          {showDeliveries ? (
-            <>
-              <div
-                className="flex absolute z-10"
-                style={{
-                  left: `${GRID_WIDTH_PX * 0}px`,
-                  bottom: `${GRID_WIDTH_PX * 1.5}px`,
-                }}
-              >
-                {state.delivery.orders
-                  .filter((o) => o.readyAt < Date.now())
-                  .slice(0, 1)
-                  .map((order) => (
-                    <div
-                      key={order.id}
-                      className="mr-2"
-                      style={{
-                        width: `${PIXEL_SCALE * 16}px`,
-                      }}
-                    >
-                      <NPC parts={NPC_WEARABLES[order.from]} />
-                    </div>
-                  ))}
-              </div>
-            </>
-          ) : (
-            <div style={{ position: "relative" }}>
-              <a href="#" id="bakery-link" onClick={openBakeryWebsite}>
-                <img
-                  src={stall}
-                  style={{
-                    width: `${PIXEL_SCALE * 59}px`,
-                    bottom: `${PIXEL_SCALE * 12}px`,
-                    left: `${PIXEL_SCALE * 0}px`,
-                    cursor: "pointer"
-                  }}
-                  alt="bakery"
-                  className="absolute"
-                />
-              </a>
-            </div>
-          )}
-
-          <img
-            src={shadow}
-            className="absolute"
-            style={{
-              width: `${PIXEL_SCALE * 15}px`,
-              left: `${PIXEL_SCALE * 52}px`,
-              bottom: `${PIXEL_SCALE * 0}px`,
-            }}
-          />
-          <img
-            src={SUNNYSIDE.npcs.goblin}
-            className="absolute z-10"
-            style={{
-              width: `${PIXEL_SCALE * 18}px`,
-              left: `${PIXEL_SCALE * 51}px`,
-              bottom: `${PIXEL_SCALE * 2}px`,
-              transform: "scaleX(-1)",
-            }}
-          />
-
-          <img
-            src={shadow}
-            className="absolute"
-            style={{
-              width: `${PIXEL_SCALE * 15}px`,
-              left: `${PIXEL_SCALE * 5.5}px`,
-              bottom: `${PIXEL_SCALE * 2}px`,
-            }}
-          />
-          <img
-            src={SUNNYSIDE.npcs.goblin}
-            className="absolute z-10"
-            style={{
-              width: `${PIXEL_SCALE * 18}px`,
-              left: `${PIXEL_SCALE * 4}px`,
-              bottom: `${PIXEL_SCALE * 4}px`,
-            }}
-          />
-
-          {lastFulfilledItemName && (
-            <img
-              src={ITEM_DETAILS[lastFulfilledItemName].image}
-              className="absolute"
-              onLoad={(e) => {
-                const img = e.currentTarget;
-                if (
-                  !img ||
-                  !img.complete ||
-                  !img.naturalWidth ||
-                  !img.naturalHeight
-                ) {
-                  return;
-                }
-
-                const left = Math.floor((76 - img.naturalWidth) / 2);
-                const bottom = Math.floor((50 - img.naturalHeight) / 2);
-                img.style.left = `${PIXEL_SCALE * left}px`;
-                img.style.bottom = `${PIXEL_SCALE * bottom}px`;
-                setImageWidth(img);
-              }}
-              style={{
-                opacity: 0,
-              }}
-            />
-          )}
-        </div>
-      </MapPlacement>
+      <div
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+        style={{
+          width: `${40 * GRID_WIDTH_PX}px`,
+          height: `${40 * GRID_WIDTH_PX}px`,
+        }}
+      >
+        <img
+          src={background}
+          className="absolute inset-0 w-full h-full"
+          id={Section.HeliosBackGround}
+        />
+        <Decorations />
+        <GrubShop />
+        <HeliosBlacksmith />
+        <GarbageCollector />
+        <ExoticShop />
+        <HeliosSunflower />
+        <LostSunflorian />
+        <HeliosAuction />
+        <IslandTravel
+          bumpkin={bumpkin}
+          inventory={gameState.context.state.inventory}
+          x={3.5}
+          y={-17}
+          onTravelDialogOpened={() => gameService.send("SAVE")}
+          travelAllowed={!autosaving}
+        />
+        {gameState.context.state.hayseedHank && <HayseedHank />}
+      </div>
+      <Hud isFarming={false} />
+      <AuctionCountdown />
     </>
   );
 };
