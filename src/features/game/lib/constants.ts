@@ -156,6 +156,26 @@ export const INITIAL_EXPANSIONS: ExpansionConstruction[] = [
     createdAt: 4,
     readyAt: 0,
   },
+   {
+    createdAt: 5,
+    readyAt: 0,
+  },
+   {
+    createdAt: 6,
+    readyAt: 0,
+  },
+   {
+    createdAt: 7,
+    readyAt: 0,
+  },
+   {
+    createdAt: 8,
+    readyAt: 0,
+  },
+   {
+    createdAt: 9,
+    readyAt: 0,
+  },
 ];
 
 export const INITIAL_BUMPKIN: Bumpkin = {
