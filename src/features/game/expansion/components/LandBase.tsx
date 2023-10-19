@@ -1,5 +1,4 @@
 import React from "react";
-
 import level1 from "assets/land/levels/level_1.webp";
 import level2 from "assets/land/levels/level_2.webp";
 import level3 from "assets/land/levels/level_3.webp";
