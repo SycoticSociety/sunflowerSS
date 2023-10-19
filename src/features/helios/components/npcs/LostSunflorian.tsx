@@ -58,11 +58,11 @@ export const LostSunflorian: React.FC = () => {
             }}
           />
           <div className="p-2">
-            <p className="mb-4">My father sent me here to rule over Helios.</p>
+            <p className="mb-4">Sycotic has sent me here to rule over HellzGate!.</p>
             <p className="mb-4">
-              {`Unfortunately, these Bumpkins don't like me watching them.`}
+              {`Unfortunately, these Scammers don't like me watching them.`}
             </p>
-            <p>{`I can't wait to return to Sunfloria.`}</p>
+            <p>{`Be mindfull of Pop-up "Tokens" and Rug pulls.`}</p>
           </div>
         </Panel>
       </Modal>
