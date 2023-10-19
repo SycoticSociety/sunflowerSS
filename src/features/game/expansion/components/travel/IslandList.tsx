@@ -215,11 +215,11 @@ export const IslandList: React.FC<IslandListProps> = ({
       levelRequired: 1 as BumpkinLevel,
       image: goblin,
       path: `/retreat/${farmId}`,
-      passRequired: false,
+      passRequired: true,
     },
     {
       name: "Treasure Island",
-      levelRequired: 10 as BumpkinLevel,
+      levelRequired: 1 as BumpkinLevel,
       image: SUNNYSIDE.icons.treasure,
       path: `/land/${farmId}/treasure-island`,
     },
