@@ -273,7 +273,7 @@ export const INITIAL_RESOURCES: Pick<
   iron: {},
 };
 
-export const INITIAL_EXPANSIONS = 3;
+export const INITIAL_EXPANSIONS = 9;
 
 const INITIAL_BUMPKIN: Bumpkin = {
   id: 1,
