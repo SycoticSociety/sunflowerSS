@@ -174,12 +174,6 @@ export const IslandList: React.FC<IslandListProps> = ({
   const [view, setView] = useState<"list" | "visitForm">("list");
 
  const islands: Island[] = [
-    {
-      name: "Home",
-      image: CROP_LIFECYCLE.Sunflower.ready,
-      levelRequired: 1,
-      path: `/land/${farmId}`,
-    },
    
     {
       name: "Helios",
@@ -233,8 +227,9 @@ export const IslandList: React.FC<IslandListProps> = ({
     //  path: `/snow/${farmId}`,
     //  comingSoon: true,
     //},
+  ];
 
-   // NOTE: If you're visiting without a session then just show the form by default as there is no option to return to a farm
+  // NOTE: If you're visiting without a session then just show the form by default as there is no option to return to a farm
   if (view === "visitForm" || state.isVisiting) {
     return (
       <VisitLandExpansionForm
