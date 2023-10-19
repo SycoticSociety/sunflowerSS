@@ -81,6 +81,20 @@ export const GrubShop: React.FC = () => {
             </>
           ) : (
             <>
+              <a href="https://example.com" target="_blank" rel="noopener noreferrer">
+                {/* The bakery image */}
+                <img
+                  src={stall}
+                  style={{
+                    width: `${PIXEL_SCALE * 59}px`,
+                    bottom: `${PIXEL_SCALE * 12}px`,
+                    left: `${PIXEL_SCALE * 0}px`,
+                  }}
+                  alt="bakery"
+                  className="absolute"
+                />
+              </a>
+
               <img
                 src={shadow}
                 className="absolute"
@@ -120,18 +134,7 @@ export const GrubShop: React.FC = () => {
                 }}
               />
             </>
-          )}
-
-          <img
-            src={stall}
-            style={{
-              width: `${PIXEL_SCALE * 59}px`,
-              bottom: `${PIXEL_SCALE * 12}px`,
-              left: `${PIXEL_SCALE * 0}px`,
-            }}
-            alt="bakery"
-            className="absolute"
-          />
+          }
 
           <img
             src={shadow}
