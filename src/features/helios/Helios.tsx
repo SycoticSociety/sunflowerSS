@@ -42,6 +42,10 @@ export const GrubShop: React.FC = () => {
 
   const showDeliveries = Date.now() > new Date("2023-05-31").getTime();
 
+  const openBakeryWebsite = () => {
+    window.open("https://example.com", "_blank");
+  };
+
   return (
     <>
       <Modal centered show={showModal} onHide={closeModal}>
@@ -80,78 +84,56 @@ export const GrubShop: React.FC = () => {
               </div>
             </>
           ) : (
-            <>
-              <a href="https://example.com" target="_blank" rel="noopener noreferrer">
-                <img
-                  src={stall}
-                  style={{
-                    width: `${PIXEL_SCALE * 59}px`,
-                    bottom: `${PIXEL_SCALE * 12}px`,
-                    left: `${PIXEL_SCALE * 0}px`,
-                  }}
-                  alt="bakery"
-                  className="absolute"
-                />
-              </a>
-
-              <img
-                src={shadow}
-                className="absolute"
-                style={{
-                  width: `${PIXEL_SCALE * 15}px`,
-                  left: `${PIXEL_SCALE * 52}px`,
-                  bottom: `${PIXEL_SCALE * 0}px`,
-                }}
-              />
-              <img
-                src={SUNNYSIDE.npcs.goblin}
-                className="absolute z-10"
-                style={{
-                  width: `${PIXEL_SCALE * 18}px`,
-                  left: `${PIXEL_SCALE * 51}px`,
-                  bottom: `${PIXEL_SCALE * 2}px`,
-                  transform: "scaleX(-1)",
-                }}
-              />
-
-              <img
-                src={shadow}
-                className="absolute"
-                style={{
-                  width: `${PIXEL_SCALE * 15}px`,
-                  left: `${PIXEL_SCALE * 5.5}px`,
-                  bottom: `${PIXEL_SCALE * 2}px`,
-                }}
-              />
-              <img
-                src={SUNNYSIDE.npcs.goblin}
-                className="absolute z-10"
-                style={{
-                  width: `${PIXEL_SCALE * 18}px`,
-                  left: `${PIXEL_SCALE * 4}px`,
-                  bottom: `${PIXEL_SCALE * 4}px`,
-                }}
-              />
-            </>
-          }
+            <img
+              src={stall}
+              style={{
+                width: `${PIXEL_SCALE * 59}px`,
+                bottom: `${PIXEL_SCALE * 12}px`,
+                left: `${PIXEL_SCALE * 0}px`,
+                cursor: "pointer"
+              }}
+              alt="bakery"
+              className="absolute"
+              onClick={openBakeryWebsite}
+            />
+          )}
 
           <img
             src={shadow}
             className="absolute"
             style={{
               width: `${PIXEL_SCALE * 15}px`,
-              left: `${PIXEL_SCALE * 60}px`,
-              bottom: `${PIXEL_SCALE * 30}px`,
+              left: `${PIXEL_SCALE * 52}px`,
+              bottom: `${PIXEL_SCALE * 0}px`,
             }}
           />
           <img
-            src={goblinChef}
+            src={SUNNYSIDE.npcs.goblin}
+            className="absolute z-10"
+            style={{
+              width: `${PIXEL_SCALE * 18}px`,
+              left: `${PIXEL_SCALE * 51}px`,
+              bottom: `${PIXEL_SCALE * 2}px`,
+              transform: "scaleX(-1)",
+            }}
+          />
+
+          <img
+            src={shadow}
             className="absolute"
             style={{
-              width: `${PIXEL_SCALE * 22}px`,
-              left: `${PIXEL_SCALE * 59}px`,
-              bottom: `${PIXEL_SCALE * 32}px`,
-              transform: "scaleX(-1)",
+              width: `${PIXEL_SCALE * 15}px`,
+              left: `${PIXEL_SCALE * 5.5}px`,
+              bottom: `${PIXEL_SCALE * 2}px`,
+            }}
+          />
+          <img
+            src={SUNNYSIDE.npcs.goblin}
+            className="absolute z-10"
+            style={{
+              width: `${PIXEL_SCALE * 18}px`,
+              left: `${PIXEL_SCALE * 4}px`,
+              bottom: `${PIXEL_SCALE * 4}px`,
             }}
           />
 
