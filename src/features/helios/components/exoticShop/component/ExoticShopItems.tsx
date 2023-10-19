@@ -23,9 +23,9 @@ export const ExoticShopItems: React.FC<Props> = ({ onClose }) => {
         <p className="mb-4">
           Sycotic's little shop of Demons is currently being forged in the depths of Hell!
         </p>
-        <p className="mb-4">{`Thank you for being part of our legume-loving community.`}</p>
+        <p className="mb-4">{`Thank you for being part of our sinister community.`}</p>
         <p>Best regards,</p>
-        <p>HellzGate Team.</p>
+        <p>The HellzGate Demons.</p>
       </div>
     </CloseButtonPanel>
   );
