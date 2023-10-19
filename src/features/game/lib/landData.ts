@@ -286,7 +286,7 @@ const INITIAL_BUMPKIN: Bumpkin = {
     pants: "Brown Suspenders",
 
     shoes: "Black Farmer Boots",
-    tool: "Farmer Pitchfork",
+    tool: "Golden Spatula",
     background: "Farm Background",
     onesie: "Eggplant Onesie",
   },
