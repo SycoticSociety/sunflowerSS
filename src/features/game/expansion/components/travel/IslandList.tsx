@@ -180,18 +180,7 @@ export const IslandList: React.FC<IslandListProps> = ({
       levelRequired: 1,
       path: `/land/${farmId}`,
     },
-    ...(hasFeatureAccess(inventory, "PUMPKIN_PLAZA") ||
-    Date.now() > SEASONS["Witches' Eve"].startDate.getTime()
-      ? [
-          {
-            name: "Pumpkin Plaza",
-            levelRequired: 1 as BumpkinLevel,
-            image: CROP_LIFECYCLE.Pumpkin.ready,
-            path: `/world/plaza`,
-            beta: true,
-          },
-        ]
-      : []),
+   
     {
       name: "Helios",
       levelRequired: 1 as BumpkinLevel,
