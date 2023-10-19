@@ -36,7 +36,7 @@ export const Hoarding: React.FC = () => {
     return `Are you ${indefiniteArticle} ${itemName} hoarder?!`;
   };
 
-  // Check if the value is 750 or greater
+  // Check if the value in gameState.context is 750 or greater
   if (gameState.context.value >= 750) {
     return (
       <>
