@@ -1,26 +1,27 @@
-import { Button } from "components/ui/Button";
-import React, { useContext } from "react";
+import React from "react";
 
-import { NPC_WEARABLES } from "lib/npcs";
-import { Context } from "features/game/GameProvider";
 import goldPass from "assets/announcements/gold_pass.png";
 import { Panel } from "components/ui/Panel";
+
 interface Props {
   onClose: () => void;
 }
 
 export const GoldPassModal: React.FC<Props> = ({ onClose }) => {
-  const { gameService } = useContext(Context);
-
   const price = 0.00;
+  const [purchased, setPurchased] = React.useState(false);
+
+  const handlePurchase = () => {
+    // Perform any purchase logic here
+    // For example, you can set the 'purchased' state to true
+    setPurchased(true);
+  };
+
   const Content = () => {
     return (
       <>
         <div className="flex flex-col p-2">
-          <img
-            src={goldPass}
-            className="w-full rounded-md my-2 img-highlight mr-2"
-          />
+          <img src={goldPass} className="w-full rounded-md my-2 img-highlight mr-2" />
           <p className="text-sm mb-1">Unlock the power of the Gold Pass:</p>
           <ul className="list-disc">
             <li className="text-xs ml-4">Craft rare NFTs</li>
@@ -43,23 +44,22 @@ export const GoldPassModal: React.FC<Props> = ({ onClose }) => {
           <Button className="mr-1" onClick={onClose}>
             No thanks
           </Button>
-          <Button
-            onClick={() => {
-              gameService.send("PURCHASE_ITEM", {
-                name: "Gold Pass",
-              });
-              onClose();
-            }}
-          >
+          <Button onClick={handlePurchase}>
             {`Buy now $${price}`}
           </Button>
         </div>
+        {purchased && (
+          <div className="flex justify-center my-0.5">
+            <span className="text-xxs italic">Purchase successful!</span>
+          </div>
+        )}
         <div className="flex justify-center my-0.5">
           <span className="text-xxs italic">{`Price is paid in $MATIC equivalent of $${price} USD`}</span>
         </div>
       </>
     );
   };
+
   return (
     <Panel bumpkinParts={NPC_WEARABLES.grubnuk}>
       <Content />
