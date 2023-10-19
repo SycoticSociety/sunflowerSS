@@ -184,7 +184,11 @@ export const IslandList: React.FC<IslandListProps> = ({
     Date.now() > SEASONS["Witches' Eve"].startDate.getTime()
       ? [
           {
-          
+            name: "Pumpkin Plaza",
+            levelRequired: 1 as BumpkinLevel,
+            image: CROP_LIFECYCLE.Pumpkin.ready,
+            path: `/world/plaza`,
+            beta: true,
           },
         ]
       : []),
@@ -297,4 +301,3 @@ export const IslandList: React.FC<IslandListProps> = ({
     </>
   );
 };
-
