@@ -183,4 +183,4 @@ export const GrubShop: React.FC = () => {
       </MapPlacement>
     </>
   );
-};
+}; 
