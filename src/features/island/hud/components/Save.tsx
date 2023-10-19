@@ -51,13 +51,13 @@ export const Save: React.FC = () => {
   }, [playing && !hasUnsavedProgress]);
 
   // Function to save the game state
-  const saveGameState = (gameStateToSave) => {
+  const saveGame = (gameStateToSave) => {
     const serializedState = JSON.stringify(gameStateToSave);
     localStorage.setItem('gameState', serializedState);
   };
 
   // Function to load the saved game state
-  const loadGameState = () => {
+  const loadGame = () => {
     const serializedState = localStorage.getItem('gameState');
     if (serializedState) {
       return JSON.parse(serializedState);
@@ -73,12 +73,12 @@ export const Save: React.FC = () => {
     const currentGameState = gameState.context; // Modify this to get your game state
 
     // Save the game state
-    saveGameState(currentGameState);
+    saveGame(currentGameState);
   };
 
   // Handle the load button click
   const loadSavedGame = () => {
-    const loadedGameState = loadGameState();
+    const loadedGameState = loadGame();
 
     if (loadedGameState) {
       // Update the game state with the loaded data (replace this with your logic)
