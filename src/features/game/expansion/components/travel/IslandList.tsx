@@ -233,8 +233,8 @@ export const IslandList: React.FC<IslandListProps> = ({
     //  path: `/snow/${farmId}`,
     //  comingSoon: true,
     //},
-  ];
-// NOTE: If you're visiting without a session then just show the form by default as there is no option to return to a farm
+
+   // NOTE: If you're visiting without a session then just show the form by default as there is no option to return to a farm
 if (view === "visitForm" || state.isVisiting) {
   return (
     <VisitLandExpansionForm
