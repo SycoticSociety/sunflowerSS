@@ -285,7 +285,7 @@ export const IslandList: React.FC<IslandListProps> = ({
         />
       ))}
       {!hideVisitOption && (
-        <VisitFriendListItem onClick={() => setView("visitForm")} />
+        //<VisitFriendListItem onClick={() => setView("visitForm")} />
       )}
     </>
   );
