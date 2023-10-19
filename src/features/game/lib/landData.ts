@@ -287,7 +287,7 @@ const INITIAL_BUMPKIN: Bumpkin = {
 
     shoes: "Black Farmer Boots",
     tool: "Golden Spatula",
-    background: "Farm Background",
+    background: "Mountain View Background",
    
   },
   skills: {
@@ -498,7 +498,7 @@ export const OFFLINE_FARM: GameState = {
           Apple: 2,
           Wheat: 3,
         },
-        sfl: 2,
+        sfl: 1000,
         boughtAt: 1,
         buyerId: 1,
       },
