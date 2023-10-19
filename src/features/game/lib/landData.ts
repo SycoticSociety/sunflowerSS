@@ -498,7 +498,7 @@ export const OFFLINE_FARM: GameState = {
           Apple: 2,
           Wheat: 3,
         },
-        sfl: 1000,
+        sfl: 750,
         boughtAt: 1,
         buyerId: 1,
       },
