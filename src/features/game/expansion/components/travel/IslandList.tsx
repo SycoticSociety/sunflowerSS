@@ -234,59 +234,56 @@ export const IslandList: React.FC<IslandListProps> = ({
     //  comingSoon: true,
     //},
   ];
+// NOTE: If you're visiting without a session then just show the form by default as there is no option to return to a farm
+if (view === "visitForm" || state.isVisiting) {
+  return (
+    <VisitLandExpansionForm
+      onBack={
+        state.isVisiting
+          ? () => authService.send("RETURN")
+          : () => setView("list")
+      }
+    />
+  );
+}
 
-  // NOTE: If you're visiting without a session then just show the form by default as there is no option to return to a farm
-  if (view === "visitForm" || state.isVisiting) {
-    return (
-      <VisitLandExpansionForm
-        onBack={
-          state.isVisiting
-            ? () => authService.send("RETURN")
-            : () => setView("list")
-        }
-      />
-    );
-  }
-
-  if (showVisitList) {
-    return (
-      <>
-        {state.isAuthorised && (
-          <IslandListItem
-            name="Home"
-            image={CROP_LIFECYCLE.Sunflower.ready}
-            levelRequired={1}
-            path={`/land/${farmId}`}
-            bumpkin={bumpkin}
-            currentPath={location.pathname}
-            disabled={!travelAllowed}
-            onClose={onClose}
-          />
-        )}
-        <VisitFriendListItem onClick={() => setView("visitForm")} />
-      </>
-    );
-  }
-
-  const hideVisitOption =
-    location.pathname.includes("retreat") ||
-    location.pathname.includes("community-garden");
+if (showVisitList) {
   return (
     <>
-      {islands.map((item) => (
+      {state.isAuthorised && (
         <IslandListItem
-          key={item.name}
-          {...item}
-          onClose={onClose}
+          name="Home"
+          image={CROP_LIFECYCLE.Sunflower.ready}
+          levelRequired={1}
+          path={`/land/${farmId}`}
           bumpkin={bumpkin}
           currentPath={location.pathname}
           disabled={!travelAllowed}
-          passRequired={item.passRequired && !inventory["Gold Pass"]}
+          onClose={onClose}
         />
-      ))}
-      {!hideVisitOption && (
-        //<VisitFriendListItem onClick={() => setView("visitForm")} />
       )}
     </>
   );
-};
+}
+
+const hideVisitOption =
+  location.pathname.includes("retreat") ||
+  location.pathname.includes("community-garden");
+return (
+  <>
+    {islands.map((item) => (
+      <IslandListItem
+        key={item.name}
+        {...item}
+        onClose={onClose}
+        bumpkin={bumpkin}
+        currentPath={location.pathname}
+        disabled={!travelAllowed}
+        passRequired={item.passRequired && !inventory["Gold Pass"]}
+      />
+    )}
+    {!hideVisitOption && (
+      <VisitFriendListItem onClick={() => setView("visitForm")} />
+    )}
+  </>
+);
