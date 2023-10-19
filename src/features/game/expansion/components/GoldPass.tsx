@@ -65,3 +65,4 @@ export const GoldPassModal: React.FC<Props> = ({ onClose }) => {
       <Content />
     </Panel>
   );
+};
