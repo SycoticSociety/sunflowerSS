@@ -183,13 +183,13 @@ export const IslandList: React.FC<IslandListProps> = ({
     ...(hasFeatureAccess(inventory, "PUMPKIN_PLAZA") ||
     Date.now() > SEASONS["Witches' Eve"].startDate.getTime()
       ? [
-          {
-            name: "Pumpkin Plaza",
-            levelRequired: 1 as BumpkinLevel,
-            image: CROP_LIFECYCLE.Pumpkin.ready,
-            path: `/world/plaza`,
-            beta: true,
-          },
+          //{
+            //name: "Pumpkin Plaza",
+            //levelRequired: 1 as BumpkinLevel,
+            //image: CROP_LIFECYCLE.Pumpkin.ready,
+            //path: `/world/plaza`,
+            //beta: true,
+         // },
         ]
       : []),
     {
@@ -201,11 +201,11 @@ export const IslandList: React.FC<IslandListProps> = ({
     ...(Date.now() < SEASONS["Witches' Eve"].startDate.getTime()
       ? [
           {
-            name: "Dawn Breaker",
-            image: dawnBreakerBanner,
-            levelRequired: 2 as BumpkinLevel,
-            path: `/world/dawn_breaker`,
-            beta: true,
+            //name: "Dawn Breaker",
+            //image: dawnBreakerBanner,
+            //levelRequired: 2 as BumpkinLevel,
+            //path: `/world/dawn_breaker`,
+            //beta: true,
           },
         ]
       : []),
@@ -215,7 +215,7 @@ export const IslandList: React.FC<IslandListProps> = ({
       levelRequired: 1 as BumpkinLevel,
       image: goblin,
       path: `/retreat/${farmId}`,
-      passRequired: true,
+      passRequired: false,
     },
     {
       name: "Treasure Island",
