@@ -18,6 +18,7 @@ import { DeliveryModal } from "features/island/delivery/Delivery";
 import { NPC } from "features/island/bumpkin/components/NPC";
 import { NPC_WEARABLES } from "lib/npcs";
 
+
 export const GrubShop: React.FC = () => {
   const { gameService } = useContext(Context);
   const [
