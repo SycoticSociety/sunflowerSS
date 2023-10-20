@@ -310,7 +310,7 @@ export const OFFLINE_FARM: GameState = {
     maze: {
       7: {
         claimedFeathers: 0,
-        sflFee: 5,
+        sflFee: 2,
         paidEntryFee: true,
         highestScore: 0,
         attempts: [
@@ -324,7 +324,7 @@ export const OFFLINE_FARM: GameState = {
       },
     },
   },
-  balance: new Decimal(100),
+  balance: new Decimal(1000),
   wardrobe: {
     "Eggplant Onesie": 1,
     "Golden Spatula": 1,
