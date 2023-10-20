@@ -54,50 +54,54 @@ import { Traded } from "../components/Traded";
 import { Sniped } from "../components/Sniped";
 
 export const AUTO_SAVE_INTERVAL = 1000 * 30; // autosave every 30 seconds
-const SHOW_MODAL: Record<StateValues, boolean> = {
-  loading: true,
-  playingFullGame: false,
-  playingGuestGame: false,
-  playing: false,
-  autosaving: false,
-  syncing: true,
-  synced: true,
-  error: true,
-  purchasing: true,
-  buyingBlockBucks: true,
-  refreshing: true,
-  deposited: true,
-  hoarding: true,
-  landscaping: false,
-  noBumpkinFound: true,
-  noTownCenter: true,
-  swarming: true,
-  coolingDown: true,
-  gameRules: true,
-  randomising: false,
-  visiting: false,
-  loadLandToVisit: true,
-  landToVisitNotFound: true,
-  revealing: false,
-  revealed: false,
-  genieRevealed: false,
-  beanRevealed: false,
-  buyingSFL: true,
-  depositing: true,
-  upgradingGuestGame: false,
-  introduction: false,
-  specialOffer: false,
-  transacting: true,
-  minting: true,
-  auctionResults: false,
-  claimAuction: false,
-  refundAuction: false,
-  promo: true,
-  trading: true,
-  sniped: true,
-  traded: true,
-  buds: false,
+
+
+const SHOW_MODAL: Record<StateValues, boolean> = { 
+   loading: true, // Open the modal on game load
+   playingFullGame: false, 
+   playingGuestGame: false, 
+   playing: false, 
+   autosaving: false, 
+   syncing: false, // Prevent syncing modal
+   synced: true, // Show synced state
+   error: false, // Prevent error modal
+   purchasing: false, // Prevent purchasing modal
+   buyingBlockBucks: false, // Prevent buyingBlockBucks modal
+   refreshing: false, // Prevent refreshing modal
+   deposited: false, // Prevent deposited modal
+   hoarding: false, // Prevent hoarding modal
+   landscaping: false, 
+   noBumpkinFound: false, // Prevent noBumpkinFound modal
+   noTownCenter: false, // Prevent noTownCenter modal
+   swarming: false, // Prevent swarming modal
+   coolingDown: false, // Prevent coolingDown modal
+   gameRules: false, // Prevent gameRules modal
+   randomising: false, 
+   visiting: false, 
+   loadLandToVisit: true, // Open the modal when loading land to visit
+   landToVisitNotFound: false, // Prevent landToVisitNotFound modal
+   revealing: false, 
+   revealed: false, 
+   genieRevealed: false, 
+   beanRevealed: false, 
+   buyingSFL: false, // Prevent buyingSFL modal
+   depositing: false, // Prevent depositing modal
+   upgradingGuestGame: false, 
+   introduction: false, 
+   specialOffer: false, // Prevent specialOffer modal
+   transacting: false, // Prevent transacting modal
+   minting: false, // Prevent minting modal
+   auctionResults: false, 
+   claimAuction: false, // Prevent claimAuction modal
+   refundAuction: false, // Prevent refundAuction modal
+   promo: false, // Prevent promo modal
+   trading: false, // Prevent trading modal
+   sniped: false, // Prevent sniped modal
+   traded: false, // Prevent traded modal
+   buds: false, 
 };
+
+
 
 // State change selectors
 const isLoading = (state: MachineState) => state.matches("loading");
