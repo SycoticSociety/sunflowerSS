@@ -9,7 +9,7 @@ import { Panel } from "components/ui/Panel";
 import { WorldHud } from "features/island/hud/WorldHud";
 import { useParams } from "react-router-dom";
 import { SceneId } from "./mmoMachine";
-import ocean from "assets/decorations/ocean.Webp";
+import Ocean from "assets/decorations/ocean.Webp";
 
 import {
   MachineInterpreter as MMOMachineInterpreter,
@@ -155,7 +155,7 @@ export const Explore: React.FC<Props> = ({ isCommunity = false }) => {
     <div
       className="bg-blue-600 w-full bg-repeat h-full flex relative items-center justify-center"
       style={{
-        backgroundImage: `url(${ocean})`,
+        backgroundImage: `url(${Ocean})`,
         backgroundSize: `${64 * PIXEL_SCALE}px`,
         imageRendering: "pixelated",
       }}
