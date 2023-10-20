@@ -376,7 +376,7 @@ expansionRequirements: {
   },
   seconds: 10,
   bumpkinLevel: 1,
-
+},
 
 
   inventory: {
