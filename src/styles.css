@@ -2,6 +2,7 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 @import "./resourceNodeAnimations.css";
+
 @layer utilities {
   .text-shadow {
     text-shadow: 1px 1px #1f1f1f;
@@ -42,7 +43,9 @@ body {
   letter-spacing: -0.4px;
   word-spacing: 3px;
   line-height: 20px;
+  background-color: black; /* Set the background color to black */
 }
+
 
 body,
 button,
