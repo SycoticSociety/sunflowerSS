@@ -15,7 +15,7 @@ export const App: React.FC = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Helios />} /> {/* Helios is the default route */}
-        <Route path="/other-route" element={<OtherComponent />} /> {/* Define other routes here */}
+        {/* Define other routes here */}
       </Routes>
     </BrowserRouter>
   );
