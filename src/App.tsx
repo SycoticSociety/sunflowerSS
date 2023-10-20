@@ -5,7 +5,7 @@ import { initialise } from "lib/utils/init";
 
 import "./styles.css";
 import { Navigation } from "./Navigation";
-import { Helios } from "./Helios"; // Import your Helios component
+import { Helios } from "./features/helios/Helios";
 
 // Initialise Global Settings
 initialise();
