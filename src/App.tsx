@@ -1,27 +1,22 @@
 import React from "react";
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { initialise } from "lib/utils/init";
 
 import "./styles.css";
-import * as Auth from "features/auth/lib/Provider";
-import ErrorBoundary from "features/auth/components/ErrorBoundary";
 import { Navigation } from "./Navigation";
+import { Helios } from "./Helios"; // Import your Helios component
 
 // Initialise Global Settings
 initialise();
 
-/**
- * Top level wrapper for providers
- */
 export const App: React.FC = () => {
   return (
     <BrowserRouter>
-      <Auth.Provider>
-        <ErrorBoundary>
-          <Navigation />
-        </ErrorBoundary>
-      </Auth.Provider>
+      <Routes>
+        <Route path="/" element={<Helios />} /> {/* Helios is the default route */}
+        <Route path="/other-route" element={<OtherComponent />} /> {/* Define other routes here */}
+      </Routes>
     </BrowserRouter>
   );
 };
