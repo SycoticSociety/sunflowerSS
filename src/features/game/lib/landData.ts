@@ -371,12 +371,12 @@ export const OFFLINE_FARM: GameState = {
 
 expansionRequirements: {
   resources: {
-    Wood: 3,
-    "Block Buck": 1,
+    Wood: 0,
+    "Block Buck": 0,
   },
   seconds: 10,
   bumpkinLevel: 1,
-}
+
 
 
   inventory: {
