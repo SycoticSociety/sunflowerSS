@@ -9,7 +9,7 @@ import { Panel } from "components/ui/Panel";
 import { WorldHud } from "features/island/hud/WorldHud";
 import { useParams } from "react-router-dom";
 import { SceneId } from "./mmoMachine";
-import Ocean from "assets/decorations/ocean.Webp";
+import ocean from "assets/decorations/ocean.webp";
 
 import {
   MachineInterpreter as MMOMachineInterpreter,
