@@ -367,14 +367,18 @@ export const OFFLINE_FARM: GameState = {
     "Pirate Leather Polo": 94,
     "Crab Claw": 95,
   },
-  expansionRequirements: {
-    resources: {
-      Wood: 3,
-      "Block Buck": 1,
-    },
-    seconds: 10,
-    bumpkinLevel: 1,
+ 
+
+expansionRequirements: {
+  resources: {
+    Wood: 0,
+    "Block Buck": 0,
   },
+  seconds: 10,
+  bumpkinLevel: 1,
+}
+
+
   inventory: {
     Rod: new Decimal(1),
     Earthworm: new Decimal(10),
