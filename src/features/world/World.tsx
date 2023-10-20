@@ -9,7 +9,7 @@ import { Context, GameProvider } from "features/game/GameProvider";
  import { WorldHud } from "features/island/hud/WorldHud"; 
  import { useParams } from "react-router-dom"; 
  import { SceneId } from "./mmoMachine"; 
- import ocean from "assets/decorations/ocean.webp"; 
+ import ocean from "assets/decorations/ocean.png"; 
   
  import { 
    MachineInterpreter as MMOMachineInterpreter, 
