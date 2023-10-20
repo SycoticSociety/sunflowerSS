@@ -8,7 +8,7 @@ const releaseVersion = CONFIG.RELEASE_VERSION as string;
 export const Ocean: React.FC = ({ children }) => {
   const oceanStyle = {
     background: `url(${ocean}) center center / cover no-repeat`,
-    imageRendering: "pixelated",
+    imageRendering: "pixelated" as React.CSSProperties["imageRendering"], // Specify the correct type
     width: "100%",
     height: "100vh",
   };
