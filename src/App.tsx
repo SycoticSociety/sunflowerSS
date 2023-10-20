@@ -16,10 +16,12 @@ initialise();
  */
 export const App: React.FC = () => {
   return (
-    <Auth.Provider>
-      <ErrorBoundary>
-        <Navigation />
-      </ErrorBoundary>
-    </Auth.Provider>
+    <BrowserRouter>
+      <Auth.Provider>
+        <ErrorBoundary>
+          <Navigation />
+        </ErrorBoundary>
+      </Auth.Provider>
+    </BrowserRouter>
   );
 };
