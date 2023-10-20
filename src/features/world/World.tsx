@@ -9,7 +9,7 @@ import { Panel } from "components/ui/Panel";
 import { WorldHud } from "features/island/hud/WorldHud";
 import { useParams } from "react-router-dom";
 import { SceneId } from "./mmoMachine";
-import ocean from "assets/decorations/GothicBg.png";
+import ocean from "assets/decorations/Ocean.Webp";
 
 import {
   MachineInterpreter as MMOMachineInterpreter,
