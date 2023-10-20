@@ -9,7 +9,7 @@ import { Panel } from "components/ui/Panel";
 import { WorldHud } from "features/island/hud/WorldHud";
 import { useParams } from "react-router-dom";
 import { SceneId } from "./mmoMachine";
-import ocean from "assets/decorations/Ocean.Webp";
+import ocean from "assets/decorations/ocean.Webp";
 
 import {
   MachineInterpreter as MMOMachineInterpreter,
@@ -17,7 +17,7 @@ import {
   MachineState as MMOMachineState,
 } from "./mmoMachine";
 import * as AuthProvider from "features/auth/lib/Provider";
-import { Ocean } from "./ui/Ocean";
+import { ocean } from "./ui/ocean";
 import { PickServer } from "./ui/PickServer";
 import { MazeHud } from "./ui/cornMaze/MazeHud";
 import { GameWrapper } from "features/game/expansion/Game";
