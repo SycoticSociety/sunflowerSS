@@ -17,7 +17,7 @@ import {
   MachineState as MMOMachineState,
 } from "./mmoMachine";
 import * as AuthProvider from "features/auth/lib/Provider";
-import { ocean } from "./ui/ocean";
+
 import { PickServer } from "./ui/PickServer";
 import { MazeHud } from "./ui/cornMaze/MazeHud";
 import { GameWrapper } from "features/game/expansion/Game";
