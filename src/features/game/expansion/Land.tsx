@@ -37,7 +37,7 @@ import { Bud } from "features/island/buds/Bud";
 import { hasFeatureAccess } from "lib/flags";
 import { Fisherman } from "features/island/fisherman/Fisherman";
 
-export const LAND_WIDTH = 6;
+export const LAND_WIDTH = 9;
 
 const getIslandElements = ({
   buildings,
