@@ -1,4 +1,6 @@
 import React, { useContext, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
+
 import { Modal } from "react-bootstrap";
 import { useSelector } from "@xstate/react";
 
@@ -148,6 +150,13 @@ const isBudding = (state: MachineState) => state.matches("buds");
 
 export const Game: React.FC = () => {
   const { gameService } = useContext(Context);
+  const navigate = useNavigate(); // Initialize useNavigate
+
+  useEffect(() => {
+    // Navigate to the "Helios" route when the game loads
+    navigate('/helios');
+  }, []);
+
 
   const visiting = useSelector(gameService, isVisiting);
   const landToVisitNotFound = useSelector(gameService, isLandToVisitNotFound);
